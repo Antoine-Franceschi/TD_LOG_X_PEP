@@ -1,0 +1,152 @@
+html {
+    height: 100%;
+    width: 100%;
+    background-color : #272C31;
+    /* background-attachment: fixed;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5); */
+    /* margin-top: 40px; */
+  }
+body {
+    background-color : #272C31;
+    height: 100%;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  
+  }
+.barre_principale{
+   
+    height: 60px;
+    /*margin: auto;*/
+    display: flex;
+    justify-content: space-between;
+    
+    
+   
+}
+.logo_pep{
+    width: 60px;
+    height: 60px;
+}
+ul{
+    list-style-type: none;
+    display:flex;
+    
+    text-decoration:none;
+}
+.logo_pep{
+    float: left;
+    margin: 5px;
+}
+.user_name{
+    margin-top:5px ;
+    
+}
+
+.Junior{
+    margin-top: 12px;
+    display: flex;
+    font-size: 250%;
+}
+
+nav a{
+    font-size: 1.3em;
+    color: white;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+    text-decoration: none;
+
+}
+ nav li{
+    margin-right: 10px;
+}
+
+
+
+a{
+    color: #f7bf4e;
+}
+a:hover{
+    opacity: 0.5;
+    
+
+}
+
+.mail_feedback{
+    height: 210px;
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.stat_money{
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+    
+
+.carré_mail, .carré_feedback,.carré_stat,.carré_money{
+    border-radius: 10px;
+    height: 200px;
+    width: 200px;
+    margin-right: 10px;
+    
+    
+}
+.carré_feedback{
+    background-color: rgb(235, 110, 88);
+}
+.carré_mail{
+    margin-right: 15px;
+    background-color: yellow;
+}
+.carré_stat{
+    margin-right: 15px;
+    background-color: rgb(180, 233, 74);
+}
+.carré_money{
+    background-color: rgba(4, 113, 214, 0.986);
+}
+
+
+
+.mail, .feedback, .Statistiques,.Tresorerie{
+    margin-left: 25px;
+    margin-top: 10px;
+    height: 150px;
+    width: 150px;
+}
+.card{
+    text-decoration:none;
+}
+.email{
+    font-size: 22px;
+    margin-left: 75px;
+}
+.feed{
+    font-size: 22px;
+    margin-left: 62px;
+}
+.stat{
+    font-size: 22px;
+    margin-left: 49px;
+}
+.treso{
+    font-size: 22px;
+    margin-left: 62px;
+}
+
+
+img:hover{
+    color: #ffffff;
+    
+}
+
+.card img:hover{
+    opacity: 0.5;
+}
+

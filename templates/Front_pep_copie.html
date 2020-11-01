@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "UTF-8"/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_front_copie.css') }}/>
+        <title>PEP-inc</title>
+
+    </head>
+    <body>
+        <div class="barre_principale">
+            <div class="logo_junior">
+                <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
+                <div class="Junior">Ponts Étude Projets</div>
+            </div>
+            <div>
+                <nav>
+                    <ul class="navbar-nav">
+                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
+                    </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </nav>
+            </div>
+        </div>
+
+        <div class="option">
+            <div class="mail_feedback">
+                <div class="carré_mail">
+                    <a href="#" class="card">
+                        <div><img class="mail" src={{ url_for('static', filename='logo_mail.png') }} alt=""></div>
+                        <div class="email" style="color: rgb(0, 0, 0);">Email</div>
+                    </a>
+                </div>
+                <div class="carré_feedback">
+                    <a  href="#"class= "card">
+                        <div><img class="feedback" src={{ url_for('static', filename='survey.png') }} alt=""></div>
+                        <div class="feed" style="color: rgb(0, 0, 0);">Feedback</div>
+                    </a>
+                </div>
+            </div>
+            <div class="stat_money">
+                <div class="carré_stat">
+                    <a href=" /stat/ "class="card">
+                        <div><img class="Statistiques" src={{ url_for('static', filename='statistics.png') }} alt=""></div>
+                        <div class="stat" style="color: rgb(0, 0, 0);">Statistiques</div>
+                    </a>
+                </div>
+                <div class="carré_money">
+                    <a href="#" class="card">
+                        <div>
+                            <img class="Tresorerie" src={{ url_for('static', filename='money-bag-euro.png') }} alt="">
+                        </div>
+                        <div class="treso" style="color: rgb(0, 0, 0);">Trésorier</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
