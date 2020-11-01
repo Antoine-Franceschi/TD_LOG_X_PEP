@@ -89,33 +89,36 @@ a:hover{
 }
     
 
-.carré_mail, .carré_feedback,.carré_stat,.carré_money{
+.carré_mail, .carré_feedback,.carré_stat,.carré_money,.carré_weekly,.carré_agenda,.carré_suividé,.carré_pep_recrutre{
     border-radius: 10px;
     height: 200px;
     width: 200px;
-    margin-right: 10px;
+    
+    margin-right: 20px;
     
     
 }
-.carré_feedback{
+.carré_feedback,.carré_pep_recrutre{
+    
     background-color: rgb(235, 110, 88);
 }
-.carré_mail{
-    margin-right: 15px;
+.carré_mail,.carré_suividé{
+    
     background-color: yellow;
 }
-.carré_stat{
-    margin-right: 15px;
+.carré_weekly,.carré_stat{
+    
     background-color: rgb(180, 233, 74);
 }
-.carré_money{
+.carré_money,.carré_agenda{
+    
     background-color: rgba(4, 113, 214, 0.986);
 }
 
 
 
-.mail, .feedback, .Statistiques,.Tresorerie{
-    margin-left: 25px;
+.mail, .feedback, .Statistiques,.Tresorerie,.weekly,.agenda,.pep_recrutre,.suividé{
+    margin-left: 12%;
     margin-top: 10px;
     height: 150px;
     width: 150px;
@@ -125,19 +128,38 @@ a:hover{
 }
 .email{
     font-size: 22px;
-    margin-left: 75px;
+    margin-left: 37%;
 }
 .feed{
     font-size: 22px;
-    margin-left: 62px;
+    margin-left: 30%;
 }
 .stat{
     font-size: 22px;
-    margin-left: 49px;
+    margin-left: 25%;
 }
 .treso{
     font-size: 22px;
-    margin-left: 62px;
+    margin-left: 32%;
+}
+.week{
+    font-size: 22px;
+    margin-left: 32%;
+
+}
+.agen{
+    font-size: 22px;
+    margin-left: 32%;
+}
+.suivi{
+    font-size: 22px;
+    margin-left: 20%;
+
+}
+.recrute{
+    font-size: 22px;
+    margin-left: 25%;
+
 }
 
 
