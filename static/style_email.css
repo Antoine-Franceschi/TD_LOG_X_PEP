@@ -75,3 +75,57 @@ a:hover{
     
 
 }
+.page_margins{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.page_body{
+    font-size: 18px;
+}
+
+.page_title{
+    display: flex;
+}
+
+.radioContainer{
+	display: inline;
+	position: absolute;
+	cursor: pointer;
+	font-family: sans-serif;
+	font-size: 14px;
+	user-select: none;
+}
+
+.form-control {
+    margin-top: 3px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    height: 30px;
+    width: 40%;
+    border: rgb(95, 95, 95);
+    background-color: rgb(95, 95, 95);
+    color:whitesmoke;
+ }
+
+ .form-control:focus{
+    outline:none;
+    outline-style: solid;
+    outline-color:rgb(187, 150, 2) ;
+  }
+
+.textarea-control{
+    margin-top: 3px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: rgb(95, 95, 95);
+    background-color: rgb(95, 95, 95);
+    color:whitesmoke;
+}
+
+.textarea-control:focus{
+    outline:none;
+    outline-style: solid;
+    outline-color:rgb(187, 150, 2) ;
+    
+}

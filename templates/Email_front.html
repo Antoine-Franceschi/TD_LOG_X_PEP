@@ -2,31 +2,32 @@
 <html>
     <head>
         <meta charset= "UTF-8"/>
-        <link rel="stylesheet" href='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_email.css'/>
+        <script type="text/javascript" nonce="e4103886214345f092537d86d07" src="//local.adguard.org?ts=1604436218434&amp;type=content-script&amp;dmn=cdn.fbsbx.com&amp;app=com.apple.Safari&amp;css=1&amp;js=1&amp;gcss=1&amp;rel=1&amp;rji=1&amp;sbe=0"></script>
+<script type="text/javascript" nonce="e4103886214345f092537d86d07" src="//local.adguard.org?ts=1604436218434&amp;name=AdGuard%20Extra&amp;type=user-script"></script><link rel="stylesheet" href="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\style_email.css"/>
         <!-- {{ url_for('static', filename='style_email.css') }}-->
         <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_email.css' -->
-        <title>PEP-inc</title>
+        <title>Prospection - PEP-inc</title>
 
     </head>
     <body>
         <div class="barre_principale">
-            <div class="logo_junior">
-                <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Front_pep_copie.html">
-                    <img class= "logo_pep" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png'  alt= "Logo pep"/>
-                    <div class="Junior">Ponts Étude Projets</div>
+            <div class="logo_junior"> <!-- classe inutile/non définie ? -->
+                <a href="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\templates\Front_pep_copie.html">
+                    <img class= "logo_pep" src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\PEPLOGO.png"  alt= "Logo pep"/>
+                    <div class="Junior">Ponts Études Projets</div>
                 </a>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
                 <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
-                
             </div>
+
             <div>
                 <nav>
                     <ul class="navbar-nav">
-                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
-                        <li class="nav-item"><a href="#"><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' alt="bouton reglage" ></a></li>
+                        <li class="user_name"><a class="user" href="#">Arnaud Rubin</a></li>
+                        <li class="nav-item"><a href="#"><img src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\settings.png" alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/login'><img src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\shutdown.png" alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -35,8 +36,63 @@
             </div>
         </div>
 
+        <br>
+        <div class="page_margins">
+            <h1 class="page_title">
+                <a href="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\templates\Front_pep_copie.html">
+                    <img src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\back.png" alt="bouton retour">
+                </a> 
+                &nbsp; Prospection <!-- &nbsp permet de générer un espace pour que l'image et le titre ne soient pas trop collés -->
+            </h1>
+            <hr color="white" style="width: 100%;"> <!-- Séparateur pour distinguer le titre du reste de la page -->
+            
+
+            <h2>Informations sur le prospect :</h2>
+            <div class="page_body">
+                Civilité :<br>
+                <!-- Petits boutons sur lesquels on peut cliquer ; au plus 1 des 2 boutons est validé -->
+                <label class="radioContainer"><input type="radio" name="civilité" value="0">Madame</label><br> 
+                <label class="radioContainer"><input type="radio" name="civilité" value="1">Monsieur</label><br>
+                <br>
+
+                Nom :<br>
+                <!-- On demande de rentrer certaines infos sur le prospect dans des petites zones de texte -->
+                <input type="text" id="name" name="prospect_name" class="form-control"/>
+                <br>
+
+                Prénom :<br>
+                <input type="text" id="firstname" name="prospect_firstname" class="form-control"/>
+                <br>
+
+                Entreprise :<br>
+                <input type="text" id="company" name="prospect_company" class="form-control"/>
+                <br>
+
+                Adresse mail :<br>
+                <input type="text" id="email" name="prospect_email" class="form-control"/>
+                <br>
+                <hr color="white" style="width: 100%;">
+            </div>
+
+            <h2>Mail :</h2>
+            <div class="page_body">
+                Objet du mail :<br>
+                <input type="text" id="object" name="mail_object" class="form-control"/>
+                <br>
+
+                Corps du mail :<br>
+                <!-- Grande zone de texte dans laquelle les retours à la lignes sont possibles et scoller l'est aussi -->
+                <textarea class="textarea-control" rows="18" cols="120" wrap="hard"></textarea><br>
+
+                Pièce jointe :<br>
+                <!-- Façon d'inclure un fichier si une pièce jointe est voulue (exemple : la plaquette PEP). Il faudra compléter pour que le back soit bien relié -->
+                <input type="file"><br><br>
 
 
-    
+                <label class="radioContainer"><input type="checkbox" name="envoi_différé" value="0">Envoi différé du mail</label>
+                <!-- Enfin, une petite boîte à cocher si on veut fixer une heure spécifique pour l'envoi du mail. Sera aussi à compléter pour pouvoir choisir date et heure. -->
+            </div>
+                
+        </div>
     </body>
 </html>
