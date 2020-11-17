@@ -2,16 +2,16 @@
 <html>
     <head>
         <meta charset= "UTF-8"/>
-        <link rel="stylesheet" href='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_front_copie.css'/>
-        <!-- {{ url_for('static', filename='style_front_copie.css') }}-->
-        <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_front_copie.css' -->
+        <link rel="stylesheet" href={{ url_for('static', filename='style_front_copie1.css') }}/>
+        
+        
         <title>PEP-inc</title>
 
     </head>
     <body>
         <div class="barre_principale">
             <div class="logo_junior">
-                <img class= "logo_pep" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png'  alt= "Logo pep"/>
+                <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
                 <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
                 <div class="Junior">Ponts Étude Projets</div>
@@ -19,11 +19,11 @@
             <div>
                 <nav>
                     <ul class="navbar-nav">
-                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
-                        <li class="nav-item"><a href="#"><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' alt="bouton reglage" ></a></li>
+                        <li class="user_name"><a class="user" href="#">{{username}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -34,33 +34,37 @@
 
         <div class="option">
             <div class="mail_feedback">
-                <div class="carré_mail">
-                    <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Email_front.html" class="card">
-                        <div><img class="mail" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/logo_mail.png' alt=""></div>
+                <div href='#' class="carré_mail">
+                    <a href='#' class="card">
+                        
+                        <div><img class="mail" src={{ url_for('static', filename='logo_mail.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='logo_mail.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/logo_mail.png' -->
                         <div class="email" style="color: rgb(0, 0, 0);">Email</div>
                     </a>
                 </div>
                 <div class="carré_feedback">
-                    <a  href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Feedback_front.html"class= "card">
-                        <div><img class="feedback" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/survey.png' alt=""></div>
+                    <a href='#' class= "card">
+                        
+                        <div><img class="feedback" src={{ url_for('static', filename='survey.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='logo_mail.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/survey.png' -->
                         <div class="feed" style="color: rgb(0, 0, 0);">Feedback</div>
                     </a>
                 </div>
                 <div class="carré_weekly">
-                    <a  href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Feedback_front.html"class= "card">
-                        <div><img class="weekly" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/weekly.png' alt=""></div>
+                    <a  href='#' class= "card">
+                        
+                        <div><img class="weekly" src={{ url_for('static', filename='weekly.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='weekly.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/weekly.png' -->
                         <div class="week" style="color: rgb(0, 0, 0);">Weekly</div>
                     </a>
                 </div>
                 <div class="carré_agenda">
-                    <a  href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/agenda.html"class= "card">
-                        <div><img class="agenda" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/agenda.png' alt=""></div>
+                    <a  href='#' class= "card">
+                        
+                        <div><img class="agenda" src={{ url_for('static', filename='agenda.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='agenda.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/agenda.png' -->
                         <div class="agen" style="color: rgb(0, 0, 0);">Agenda</div>
@@ -69,17 +73,19 @@
             </div>
             <div class="stat_money">
                 <div class="carré_stat">
-                    <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Statistiques.html"class="card">
-                        <div><img class="Statistiques" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/statistics.png' alt=""></div>
+                    <a href='#' class="card">
+                        
+                        <div><img class="Statistiques" src={{ url_for('static', filename='statistics.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='statistics.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/statistics.png' -->
                         <div class="stat" style="color: rgb(0, 0, 0);">Statistiques</div>
                     </a>
                 </div>
                 <div class="carré_money">
-                    <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Tresorier.html" class="card">
+                    <a href='/tresorerie/{{username}}' class="card">
+                        
                         <div>
-                            <img class="Tresorerie" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/money-bag-euro.png' alt="">
+                            <img class="Tresorerie" src={{ url_for('static', filename='money-bag-euro.png') }} alt="">
                             <!-- {{ url_for('static', filename='money-bag-euro.png') }}-->
                             <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/money-bag-euro.png' -->
                         </div>
@@ -87,9 +93,10 @@
                     </a>
                 </div>
                 <div class="carré_suividé">
-                    <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/suivi_d_etude.html" class="card">
+                    <a href='#' class="card">
+                        
                         <div>
-                            <img class="suividé" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/suivi.png' alt="">
+                            <img class="suividé" src={{ url_for('static', filename='suivi.png') }} alt="">
                             <!-- {{ url_for('static', filename='suivi.png') }}-->
                             <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/suivi.png' -->
                         </div>
@@ -97,9 +104,9 @@
                     </a>
                 </div>
                 <div class="carré_pep_recrutre">
-                    <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/pep_recrute.html" class="card">
+                    <a href= '#' class="card">
                         <div>
-                            <img class="pep_recrutre" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/pep_recrute.png' alt="">
+                            <img class="pep_recrutre" src={{ url_for('static', filename='pep_recrute.png') }} alt="">
                             <!-- {{ url_for('static', filename='pep_recrute.png') }}-->
                             <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/pep_recrute.png' -->
                         </div>

@@ -2,17 +2,18 @@
 <html>
     <head>
         <meta charset= "UTF-8"/>
-        <link rel="stylesheet" href='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_tresorier.css'/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_tresorier.css') }}/>
         <!-- {{ url_for('static', filename='style_tresorier.css') }}-->
         <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_tresorier.css' -->
+        
         <title>PEP-inc</title>
 
     </head>
     <body>
         <div class="barre_principale">
             <div class="logo_junior">
-                <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Front_pep_copie.html">
-                    <img class= "logo_pep" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png'  alt= "Logo pep"/>
+                <a href="/home/{{name}}">
+                    <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
                     <div class="Junior">Ponts Étude Projets</div>
                 </a>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
@@ -23,10 +24,10 @@
                 <nav>
                     <ul class="navbar-nav">
                         <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
-                        <li class="nav-item"><a href="#"><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' alt="bouton reglage" ></a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -34,9 +35,88 @@
                 </nav>
             </div>
         </div>
+        <p class="titre">Factures</p>
+        <div class="ajouter">
+            <button type="button" class="Ajouter"> Ajouter une facture </button>
+        </div>
+        <table class="tableau">
+            <thead class="thead-dark">
+                <tr class="premiere_ligne">
+                    <th>Numéro</th>
+                    <th>Type</th>
+                    <th>Client</th>
+                    <th>Montant</th>
+                    <th>État</th>
+                    <th>Date d'échéance</th>
+                    <th>Date de paiement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Numéro</td>
+                    <td>Type</td>
+                    <td>Client</td>
+                    <td>Montant</td>
+                    <td>État</td>
+                    <td>Date d'échéance</td>
+                    <td>Date de paiement</td>
+                </tr>
+                {% for facture in Factures %}
+                    </tr>
+                        <td>{{facture[0]}}</td>
+                        <td>{{facture[1]}}</td>
+                        <td>{{facture[2]}}</td>
+                        <td>{{facture[3]}}</td>
+                        <td>{{facture[4]}}</td>
+                        <td>{{facture[5]}}</td>
+                        <td>{{facture[6]}}</td>
+                    </tr>
+                {% endfor %}
+                
+                  
+            </tbody>
+        </table>
+        <form method="POST">
+            {{template_form.hidden_tag()}}
+            <ul>
+                <li>
+                    {{ template_form.Numero.label}}
+                    {{ template_form.Numero()}}
+                </li>
+                <li>
+                    {{ template_form.Type.label}}
+                    {{ template_form.Type()}}
+                </li>
+                <li>
+                    {{ template_form.Client.label}}
+                    {{ template_form.Client()}}
+                </li>
+                <li>
+                    {{ template_form.Montant.label}}
+                    {{ template_form.Montant()}}
+                </li>
+                <li>
+                    {{ template_form.Etat.label}}
+                    {{ template_form.Etat()}}
+                </li>
+                <li>
+                    {{ template_form.Date_echeance.label}}
+                    {{ template_form.Date_echeance()}}
+                </li>
+                <li>
+                    {{ template_form.Date_paiement.label}}
+                    {{ template_form.Date_paiement()}}
+                </li>
+            </ul>
+            <div class = submit >
+                {{ template_form.submit()}}
+            </div>
 
+            
 
+            
 
+        </form>
     
     </body>
 </html>

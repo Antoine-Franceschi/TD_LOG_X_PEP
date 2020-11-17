@@ -93,7 +93,6 @@ a:hover{
     border-radius: 10px;
     height: 200px;
     width: 200px;
-    
     margin-right: 20px;
     
     
@@ -115,9 +114,7 @@ a:hover{
     background-color: rgba(4, 113, 214, 0.986);
 }
 
-
-
-.mail, .feedback, .Statistiques,.Tresorerie,.weekly,.agenda,.pep_recrutre,.suividé{
+.mail, .feedback, .Statistiques ,.Tresorerie, .weekly, .agenda, .pep_recrutre, .suividé{
     margin-left: 12%;
     margin-top: 10px;
     height: 150px;
@@ -172,7 +169,7 @@ img:hover{
     opacity: 0.5;
 }
 @media all and (max-width:800px){
-    @media all and (max-width: 1024px)
+@media all and (max-width: 1024px)
 {
     nav
     {

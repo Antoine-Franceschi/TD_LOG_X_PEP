@@ -3,9 +3,9 @@
     <head>
         <meta charset="utf-8">
         
-        <link rel="stylesheet" href={{ url_for('static', filename='style_login_copie.css') }}/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_login_copie1.css') }}/>
         <!-- {{ url_for('static', filename='style_login_copie.css') }}/>-->
-        <!--'/Users/christinevescovali-franceschi/Desktop/TD-LOG-PEP/FRONT/static/style_login_copie.css'-->
+        
         <style>
             .flashes {
                 color: red;
@@ -31,11 +31,11 @@
                 
                 
                 <div class="form-label-group">
-                     <input name="_username" type="email" id="inputEmail" class="form-control1" placeholder = "Adresse mail" />
+                     <input name="_username" type="email" id="inputEmail" class="form-control1" placeholder = "Adresse mail" required="required"/>
                 </div>
 
                 <div class="form-label-group">
-                     <input name="_password" type="password" id="inputPassword" class="form-control2" placeholder = "Mot de passe"  />
+                     <input name="_password" type="password" id="inputPassword" class="form-control2" placeholder = "Mot de passe" required="required" />
                     
                 </div>
                 
