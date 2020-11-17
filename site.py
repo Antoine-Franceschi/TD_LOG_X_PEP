@@ -26,7 +26,7 @@ def home(name):
     if "utilisateur"in session:
         return render_template("Front_pep_copie.html", username=name)
     else:
-        return redirect(url_for('login.copie.html'))
+        return redirect(url_for('identification'))
 
 
 ############################## page de login ##########################
@@ -49,6 +49,11 @@ def identification():
             name=session['utilisateur']
             return redirect(url_for("home",name=name))
         return render_template("login_copie.html")
+
+@app.route('/logout')
+def logout():
+    session.pop('utilisateur', None)
+    return redirect(url_for('identification'))
         
 ############################## page trésorerie ##########################
 @app.route('/tresorerie/<name>',methods=["GET","POST"])
