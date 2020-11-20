@@ -23,11 +23,11 @@
             <div>
                 <nav>
                     <ul class="navbar-nav">
-                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
                         <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/logout'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -37,7 +37,7 @@
         </div>
         <p class="titre">Factures</p>
         <div class="ajouter">
-            <button type="button" class="Ajouter"> Ajouter une facture </button>
+            <button onclick="window.location.href = '/tresoreie/{{name}}/add_delete';" type="button" class="Ajouter"> Ajouter une facture </button>
         </div>
         <table class="tableau">
             <thead class="thead-dark">
@@ -49,68 +49,33 @@
                     <th>État</th>
                     <th>Date d'échéance</th>
                     <th>Date de paiement</th>
+                    <th>Modifier</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Numéro</td>
-                    <td>Type</td>
-                    <td>Client</td>
-                    <td>Montant</td>
-                    <td>État</td>
-                    <td>Date d'échéance</td>
-                    <td>Date de paiement</td>
-                </tr>
-                {% for facture in Factures %}
+                
+                {% for facture in BDD_facture %}
                     </tr>
-                        <td>{{facture[0]}}</td>
-                        <td>{{facture[1]}}</td>
-                        <td>{{facture[2]}}</td>
-                        <td>{{facture[3]}}</td>
-                        <td>{{facture[4]}}</td>
-                        <td>{{facture[5]}}</td>
-                        <td>{{facture[6]}}</td>
-                    </tr>
+                        <td><a href ='/tresoreie/{{name}}/{{facture._id}}/delete'>{{facture.numero}}</a></td>
+                        <td>{{facture.Type}}</td>
+                        
+                        <td>{{facture.client}}</td>
+                        <td>{{facture.montant}}</td>
+                        <td>{{facture.etat}}</td>
+                        {% if facture.retard == True  %}
+                            <td style="color: rgb(218, 7, 49);">{{facture.date_echeance}}</td>
+                        {% else %}
+                            <td style="color: rgb(95, 218, 7);">{{facture.date_echeance}}</td>
+                        {% endif %}
+                        <td>{{facture.date_paiement}}</td>
+                        <td><a href ='/tresoreie/{{name}}/{{facture._id}}/modify'><img src="{{ url_for('static', filename='edit1.png') }}" class="edit" height="16" width="16" ></a></td>
+                    </tr></a>
                 {% endfor %}
                 
                   
             </tbody>
         </table>
-        <form method="POST">
-            {{template_form.hidden_tag()}}
-            <ul>
-                <li>
-                    {{ template_form.Numero.label}}
-                    {{ template_form.Numero()}}
-                </li>
-                <li>
-                    {{ template_form.Type.label}}
-                    {{ template_form.Type()}}
-                </li>
-                <li>
-                    {{ template_form.Client.label}}
-                    {{ template_form.Client()}}
-                </li>
-                <li>
-                    {{ template_form.Montant.label}}
-                    {{ template_form.Montant()}}
-                </li>
-                <li>
-                    {{ template_form.Etat.label}}
-                    {{ template_form.Etat()}}
-                </li>
-                <li>
-                    {{ template_form.Date_echeance.label}}
-                    {{ template_form.Date_echeance()}}
-                </li>
-                <li>
-                    {{ template_form.Date_paiement.label}}
-                    {{ template_form.Date_paiement()}}
-                </li>
-            </ul>
-            <div class = submit >
-                {{ template_form.submit()}}
-            </div>
+        
 
             
 

@@ -3,28 +3,60 @@ from flask import Flask,render_template,url_for,request, redirect, flash,session
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, FloatField, SelectField, DateField
 from datetime import timedelta
+from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 app = Flask(__name__)
-Utilisateur=[("antoine@pep.com","pep"),("arnaud@pep.com","pep"),("juliette@pep.com","pep"),("mai-linh@pep.com","pep")]
 app.secret_key = '2d9-E2.)f&é,A$p@fpùsgh+dSU03ê9_'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 app.permanent_session_lifetime = timedelta(minutes=5)
-Factures =[[1,2,3,4,5,6,7]]
 
-class factureForm(FlaskForm):
-    Numero = StringField("Numero")
-    Type = StringField("Type")
-    Client = StringField("Client")
-    Montant = FloatField("Montant")
-    Etat = SelectField("Etat", choices=["Emise","Payé"])
-    Date_echeance = DateField("Date d'échéance")
-    Date_paiement = StringField("Date de paiement")
-    submit= SubmitField("Ajouter Facture")
+db= SQLAlchemy(app)
+
+class db_utilisateurs(db.Model):
+    _id = db.Column("id", db.Integer, primary_key= True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    mdp = db.Column(db.String(100))
+
+    def __init__(self, name, email, mdp):
+        self.name = name
+        self.email = email 
+        self.mdp = mdp
+
+
+class db_factures(db.Model):
+    _id = db.Column("id", db.Integer, primary_key= True)
+    numero = db.Column(db.String(100))
+    Type = db.Column(db.String(100))
+    client = db.Column(db.String(100))
+    montant= db.Column(db.Float)
+    etat = db.Column(db.String(100))
+    date_echeance = db.Column(db.String(100))
+    date_paiement = db.Column(db.String(100))
+    suiveur = db.Column(db.String(100))
+    retard = db.Column(db.Boolean)
+    def __init__(self, numero, Type, client,montant, etat, date_echeance, date_paiement, suiveur): 
+        self.numero= numero 
+        self.Type = Type 
+        self.client = client 
+        self.montant = montant 
+        self.etat = etat 
+        self.date_paiement= date_paiement
+        self.date_echeance = date_echeance
+        self.suiveur = suiveur
+    
+        
+Factures = [[1,2,3,4,5,6,7]]
+
 
 ############################## page d'acceuil ##########################
 @app.route('/home/<name>')
 def home(name):
-    if "utilisateur"in session:
-        return render_template("Front_pep_copie.html", username=name)
+    
+    if "name" in session:
+        return render_template("Front_pep_copie.html", username=session["name"])
     else:
         return redirect(url_for('identification'))
 
@@ -34,39 +66,140 @@ def home(name):
 @app.route('/login',methods= ['GET','POST'])
 def identification():
     if request.method =="POST":
-        
-        session.permanent = True
-        utilisateur = (request.form['_username'], request.form['_password'])
-        session['utilisateur']=utilisateur[1]
 
-        if utilisateur in Utilisateur:
-            return redirect(url_for("home",name=utilisateur[1]))
+        session.permanent = True
+        
+        utilisateur = (request.form['_username'], request.form['_password'])
+        found_utilisateur = db_utilisateurs.query.filter_by(email=utilisateur[0], mdp=utilisateur[1]).first()
+        
+        if found_utilisateur:
+            session["name"]=found_utilisateur.name
+            return redirect(url_for("home",name=found_utilisateur.name))
+
         else:
             flash(u"Erreur d'authentification!")
             return render_template("login_copie.html")
     else:
-        if 'utilisateur'in session:
-            name=session['utilisateur']
-            return redirect(url_for("home",name=name))
+        if "name" in session:
+            return redirect(url_for("home",name=session["name"]))
         return render_template("login_copie.html")
 
 @app.route('/logout')
 def logout():
-    session.pop('utilisateur', None)
+    session.pop('name', None)
     return redirect(url_for('identification'))
         
 ############################## page trésorerie ##########################
 @app.route('/tresorerie/<name>',methods=["GET","POST"])
 def index12(name):
+    init_bd()
+    return render_template('Tresorier.html', name=name, BDD_facture = db_factures.query.all())
+
+def init_bd():
+    
+    for facture in db_factures.query.all():
+        retard1 = init_retard(facture.date_echeance)
+        facture.retard = retard1
+        db.session.commit()
+        
+    
+        
+
+        
+
+def init_retard(date):
+    now = datetime.datetime.now()
+    date_now = now.year*10000+now.month*100+now.day
+    if int(date[0:2])<10:
+        taille_date=1
+    else:
+        taille_date=2
+    date_converti = int(date[0:2])
+    month = date[taille_date+1:taille_date+4]
+    year = int(date[taille_date+5::])
+    L=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    for k in range(len(L)):
+        if month == L[k]:
+            date_converti+=(k+1)*100
+
+    date_converti += year*10000
+    if date_converti<=date_now:
+        return True
+        #je  suis  en retard
+    #sinon je  ne suis pas   en retard
+    return False
+
+
+@app.route('/tresoreie/<name>/add_delete', methods=["GET","POST"])
+def add(name):
     if request.method == "POST":
-        Factures.append([request.form['Numero'],request.form['Type'],request.form['Client'],request.form['Montant'],request.form['Etat'],request.form['Date_echeance'],request.form['Date_paiement']])
-        print(Factures)
-    return render_template('Tresorier.html', name=name, Factures = Factures, template_form=factureForm())
+        date_echeance = str(request.form['_date_j']) + ' ' + str(request.form['_date_m']) + ' ' + str(request.form['_date_y'])
+        date_paiement = str(request.form['_date_j_p']) + ' ' + str(request.form['_date_m_p']) + ' ' + str(request.form['_date_y_p'])
+        facture= db_factures(request.form['_numero'],request.form['_type'],request.form['_client'],request.form['_montant'],request.form['_etat'],date_echeance, date_paiement, request.form['_suiveur'])
+        db.session.add(facture)
+        db.session.commit()
+        facture = db_factures.query.all()[0]
+        print(facture.date_echeance)
+        
+        
+        return redirect(url_for('index12', name= name))
+    return render_template('add_delete.html',name=name)
+
+@app.route('/tresoreie/<name>/<int:id>/modify', methods=["GET","POST"])
+def modify(name,id):
+    facture = db_factures.query.get(id)
+    date= facture.date_echeance
+    if int(date[0:2])<10:
+        taille_date=1
+    else:
+        taille_date=2
+    jour_e = date[0:2]
+    mois_e = date[taille_date+1:taille_date+4]
+    annee_e = date[taille_date+5::]
+
+    date= facture.date_paiement
+    if "-" not in date:
+        if int(date[0:2])<10:
+            taille_date=1
+
+        else:
+            taille_date=2
+        jour_p = date[0:2]
+        mois_p = date[taille_date+1:taille_date+4]
+        annee_p = date[taille_date+5::]
+    else: 
+        jour_p= "-"
+        mois_p= "-"
+        annee_p= "-"
+    if request.method == "POST":
+        date_echeance = str(request.form['_date_j']) + ' ' + str(request.form['_date_m']) + ' ' + str(request.form['_date_y'])
+        date_paiement = str(request.form['_date_j_p']) + ' ' + str(request.form['_date_m_p']) + ' ' + str(request.form['_date_y_p'])
+        
+        facture.numero = request.form['_numero']
+        facture.Type = request.form['_type']
+        facture.client = request.form['_client']
+        facture.montant = request.form['_montant']
+        facture.etat = request.form['_etat']
+        facture.date_paiement = date_paiement
+        facture.date_echeance = date_echeance
+        facture.suiveur = request.form['_suiveur']
+        db.session.commit()
+        return redirect(url_for('index12', name= name))
+    return render_template('delete.html',name=name,facture=facture, jour_e=jour_e, mois_e=mois_e,annee_e=annee_e,jour_p=jour_p,mois_p=mois_p, annee_p=annee_p)
+
+@app.route('/tresoreie/<name>/<int:id>/delete',methods=["GET","POST"])
+def delete(name,id):
+    delete= db_factures.query.filter_by(_id=id).first()
+    db.session.delete(delete)
+    db.session.commit()
+    return redirect(url_for('index12', name= name))
+
+
 
 
 
 
 
 if __name__ == "__main__":
-
+    db.create_all()
     app.run()

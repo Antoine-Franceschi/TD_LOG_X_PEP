@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "UTF-8"/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_delete3.css') }}/>
+        <!-- {{ url_for('static', filename='style_add_delete.css') }}-->
+        <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_tresorier.css' -->
+        
+        <title>PEP-inc</title>
+
+    </head>
+    <body>
+        <div class="barre_principale">
+            <div class="logo_junior">
+                <a href="/home/{{name}}">
+                    <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
+                    <div class="Junior">Ponts Étude Projets</div>
+                </a>
+                <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
+                <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
+                
+            </div>
+            <div>
+                <nav>
+                    <ul class="navbar-nav">
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
+                        <!-- {{ url_for('static', filename='settings.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
+                        <!-- {{ url_for('static', filename='shutdown.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
+                    </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </nav>
+            </div>
+        </div>
+        <p class="titre">Facture</p>
+        <form class="form-signin" method="post">
+            <div class="facture">
+                <div class="debut1">
+                    <label for="input_numero">Numero de Facture</label>
+                    <br>
+                    <input name="_numero"  id="input_numero" class="form-numero" required="required" value = {{facture.numero}} />
+                </div>
+
+                <div class="form-label-group">
+                    <label for="input_type">Type de facture </label>
+                    <br>
+                    <select name="_type"  id="input_type" class="form-mdp"  required="required" >
+                        <option >{{facture.Type}}</option>
+                        <option >Refacturation </option>
+                        <option >Facture de solde </option>
+                        <option >Facture d'acompte </option>
+                    </select>
+                </div>
+            
+                <div>
+                    <label for="input_numero">Client</label>
+                    <br>
+                    <input name="_client" id="input_client" class="form-client"  required="required" value = {{facture.client}} />
+                </div>
+
+                <div>
+                    <label for="input_numero">Montant (TTC)</label>
+                    <br>
+                    <input name="_montant" id="input_montant" class="form-montant"  required="required" value = {{facture.montant}} />
+                </div>
+
+                <div>
+                    <label for="Etat">Etat de la facture</label>
+                    <br>
+                    <select name= "_etat" class="form-etat"  required="required" id="Etat">
+                        <option>{{facture.etat}}</option>
+                        <option>Émise</option>
+                        <option >Payée</option>
+                    </select> 
+                </div>
+
+                <div class="date d'échéance">
+                    <label for="date">Date d'échéance</label>
+                    <br>
+                    <select name="_date_j" id="date" class="form-jour" required="required">
+                        <option>{{jour_e}}</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option >28</option><option >29</option><option>30</option><option >31</option>
+                    </select>
+                    <select name="_date_m"  class="form-mois" required="required" >
+                        <option>{{mois_e}}</option><option >Jan</option><option>Feb</option><option>Mar</option><option>Apr</option><option>May</option><option >Jun</option><option >Jul</option><option >Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+                    </select>
+                    <select name="_date_y"  class="form-année" required="required" >
+                        <option>{{annee_e}}</option><option>2020</option> <option>2021</option>
+                    </select>
+
+                </div>
+                <div>
+                    <label for="input_suiveur"> Suiveur </label>
+                    <br>
+                    <select name="_suiveur" id="input_suiveur" class="form-suiveur" required="required" >
+                        <option>{{facture.suiveur}}</option>
+                        <option> Mai-Linh</option>
+                        <option> Arnaud </option>
+                        <option> Antoine</option>
+                    </select>
+                </div>
+                <div class="date de paiement">
+                    <label for="date">Date de paiement</label>
+                    <br>
+                    <select name="_date_j_p" id="date" class="form-jour" required="required">
+                        <option>{{jour_p}}</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option >28</option><option >29</option><option>30</option><option >31</option>
+                    </select>
+                    <select name="_date_m_p"  class="form-mois"  >
+                        <option>{{mois_p}}</option><option >Jan</option><option>Feb</option><option>Mar</option><option>Apr</option><option>May</option><option >Jun</option><option >Jul</option><option >Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+                    </select>
+                    <select name="_date_y_p"  class="form-année" >
+                        <option>{{annee_p}}</option><option>2020</option> <option>2021</option>
+                    </select>
+
+                </div>
+
+                <button class="valider" type="submit" >Save</button>
+                
+            </div>
+        </form>
+        
+        <div><button onclick="window.location.href = '/tresoreie/{{name}}/{{facture._id}}/delete';" class="supprimer">Delete</button></div>
+
+    
+    </body>
+</html>
