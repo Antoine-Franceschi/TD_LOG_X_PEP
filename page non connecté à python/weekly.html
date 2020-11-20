@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "UTF-8"/>
+        <link rel="stylesheet" href="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\style_weekly.css"/>
+        <!-- {{ url_for('static', filename='style_weekly.css') }}-->
+        <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_weekly.css' -->
+        <title>Weekly - PEP-inc</title>
+
+    </head>
+    <body>
+        <div class="barre_principale">
+            <div class="logo_junior">
+                <a href="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\templates\Front_pep_copie.html">
+                    <img class= "logo_pep" src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\PEPLOGO.png"  alt= "Logo pep"/>
+                    <div class="Junior">Ponts Études Projets</div>
+                </a>
+                <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
+                <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
+                
+            </div>
+            <div>
+                <nav>
+                    <ul class="navbar-nav">
+                        <li class="user_name"><a class="user" href="#">Arnaud Rubin</a></li>
+                        <li class="nav-item"><a href="#"><img src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\settings.png" alt="bouton reglage" ></a></li>
+                        <!-- {{ url_for('static', filename='settings.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
+                        <li class="nav-item"><a href='/login'><img src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\shutdown.png" alt="bouton shutdown" ></a></li>
+                        <!-- {{ url_for('static', filename='shutdown.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
+                    </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </nav>
+            </div>
+        </div>
+
+        <br>
+        <div class="page_margins">
+            <h1 class="page_title">
+                <a href="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\templates\Front_pep_copie.html">
+                    <img src="D:\Ecole d'ingénieur\Parcours Académique\2A Arnaud Rubin\TDLOG\TD_LOG_X_PEP\static\back.png" alt="bouton retour">
+                </a> 
+                &nbsp; Weekly <!-- &nbsp permet de générer un espace pour que l'image et le titre ne soient pas trop collés -->
+            </h1>
+            <hr color="white" style="width: 100%;"> <!-- Séparateur pour distinguer le titre du reste de la page -->
+            
+
+            <div class="page_body">
+                
+                Prénom :<br>
+                <input type="text" id="firstname" name="prospect_firstname" class="form-control"/>
+                <br>
+                <br>
+
+                <section> <!-- Zone qui va être alignée horizontalement comme sur le sheet utilisé habituellement (grâce au CSS) -->
+                    <div class="colonne">
+                        Projets en cours :<br>
+                        <!-- Zone de texte dans laquelle les retours à la lignes sont possibles pour bien séparer les projets en cours (plus facile que de faire 1 zone par projet ?) -->
+                        <textarea class="textarea-control" rows="8" cols="35" wrap="hard"></textarea><br>
+                    </div>
+                    <div class="colonne">
+                        Actions menées :<br>
+                        <textarea class="textarea-control" rows="8" cols="35" wrap="hard"></textarea><br>
+                    </div>
+                    <div class="colonne">
+                        Échéances :<br>
+                        <textarea class="textarea-control" rows="8" cols="35" wrap="hard"></textarea><br>
+                    </div>
+                    <div class="colonne">
+                        Avancement et difficultés rencontrées : <br>
+                        <textarea class="textarea-control" rows="8" cols="35" wrap="hard"></textarea><br>
+                    </div>
+                </section>
+                <br>
+
+                Charge de travail à PEP : <br>
+                <select name="travailPEP" class="textarea-control">
+                    <option value="">Sélectionner une valeur</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <br>
+                <br>
+
+                Charge de travail générale : <br>
+                <select name="travailPEP" class="textarea-control">
+                    <option value="">Sélectionner une valeur</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <br>
+                <br>
+                
+                <label class="radioContainer"><input type="checkbox" name="envoi_différé" value="0">Impossible de travailler plus, c'est la CRISE !</label>
+            </div>
+        </div>
+    </body>
+</html>
