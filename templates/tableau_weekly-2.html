@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "UTF-8"/>
+        
+        <link rel="stylesheet" href={{ url_for('static', filename='style_tableau_weekly1.css') }}/>
+        <!-- {{ url_for('static', filename='style_tableau_weekly.css') }}-->
+        <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_pep_recrute.css' -->
+        <title>Tableau Weekly - PEP-inc</title>
+
+    </head>
+    <body>
+        <div class="barre_principale">
+            <div class="logo_junior">
+                <a href="/home/{{name}}">
+                    <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
+                    <div class="Junior">Ponts Études Projets</div>
+                </a>
+                <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
+                <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
+                
+            </div>
+            <div>
+                <nav>
+                    <ul class="navbar-nav">
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
+                        <!-- {{ url_for('static', filename='settings.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
+                        <!-- {{ url_for('static', filename='shutdown.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
+                    </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </nav>
+            </div>
+        </div>
+
+        <br>
+        <div class="page_margins">
+            <h1 class="page_title">
+                <a href="/home/{{name}}">
+                    <img src={{ url_for('static', filename='back1.png') }} alt="bouton retour">
+                </a> 
+                &nbsp; Tableau de Weekly
+            </h1>
+            <hr color="white" style="width: 100%;"> <!-- Séparateur pour distinguer le titre du reste de la page -->
+
+
+            <!-- Voir pour changer le code à partir de là -->
+            <div class="ajouter">
+                <button onclick="window.location.href = '/weekly/{{name}}/add';" type="button" class="Ajouter"> Ajouter un commentaire </button>
+            </div>
+            <table class="tableau-style">
+                <thead>
+                    <tr>
+                        <th>Noms</th>
+                        <th>Projets</th>
+                        <th>Actions</th>
+                        <th>Échéances</th>
+                        <th>Avancement et difficultés</th>
+                        <th>Prospection</th>
+                        <th>Charge de travail à PEP</th>
+                        <th>Charge de travail générale</th>
+                        <th>Modifier</th>
+                    </tr>
+                </thead>
+
+                <tbody class="case">
+                    {% for commentaire in BDD_commentaire %}
+                        <tr>
+                            <td>{{commentaire.name}}</td>
+                            <td>{{commentaire.projet}}</td>
+                            <td>{{commentaire.action}}</td>
+                            <td>{{commentaire.echeance}}</td>
+                            <td>{{commentaire.avancement}}</td>
+                            <td>{{commentaire.prospection}}</td>
+                            <td>{{commentaire.travail_pep}}</td>
+                            <td>{{commentaire.travail_gene}}</td>
+                            
+                            <td><a href ='/weekly/{{name}}/{{commentaire._id}}/modify_delete'><img src={{ url_for('static', filename='edit1.png') }} class="edit" height="16" width="16" ></a></td>
+                        </tr>
+                    {% endfor %}
+
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="center">
+            <a href="back2.png" download><button class="pdf" type="button">Enregistrer le tableau</button></a>
+        </div>
+        
+        
+
+    </body>
+</html>

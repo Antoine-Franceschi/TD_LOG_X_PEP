@@ -109,13 +109,14 @@ a:hover{
     color:whitesmoke;
  }
 
- .form-control:focus{
+.form-control:focus{
     outline:none;
     outline-style: solid;
     outline-color:rgb(187, 150, 2) ;
-  }
+}
 
 .textarea-control{
+    width: 80%;
     margin-top: 3px;
     margin-bottom: 15px;
     font-size: 16px;
@@ -131,11 +132,75 @@ a:hover{
     
 }
 
+
+.textarea-control1{
+    
+    margin-top: 3px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: rgb(95, 95, 95);
+    background-color: rgb(95, 95, 95);
+    color:whitesmoke;
+}
+
+.textarea-control1:focus{
+    outline:none;
+    outline-style: solid;
+    outline-color:rgb(187, 150, 2) ;
+    
+}
+.textarea-control3{
+    height: 20px;
+    margin-top: 3px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: rgb(95, 95, 95);
+    background-color: rgb(95, 95, 95);
+    color:whitesmoke;
+
+}
+.textarea-control3:focus{
+    outline:none;
+    outline-style: solid;
+    outline-color:rgb(187, 150, 2) ;
+    
+}
+
 section{
-	display: flex;
+    display: flex;
+    
 }
 
 .colonne{
 	width: 25%;
 	margin-left: 10px;
+}
+button{
+    margin-left: 43%;
+    font-size: larger;
+    border-radius: 10px;
+    height: 50px;
+    border-color:rgba(119, 223, 0, 0.797);
+    background-color: transparent;
+    color:rgba(119, 223, 0, 0.797);
+}
+button:hover{
+    background-color: rgba(119, 223, 0, 0.797);
+    color: white;
+}
+
+.supprimer{
+    width: 10%;
+    margin-left: 90%;
+    font-size: larger;
+    border-radius: 10px;
+    height: 50px;
+    border-color:rgba(232, 25, 29, 0.797);
+    background-color: transparent;
+    color:rgba(232, 25, 29, 0.797);
+}
+
+.supprimer:hover{
+    background-color: rgba(232, 25, 29, 0.797);
+    color: white;
 }

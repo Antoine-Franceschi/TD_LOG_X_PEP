@@ -14,7 +14,7 @@
             <div class="logo_junior">
                 <a href="/home/{{name}}">
                     <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
-                    <div class="Junior">Ponts Étude Projets</div>
+                    <div class="Junior">Ponts Études Projets</div>
                 </a>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
                 <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
@@ -55,8 +55,8 @@
             <tbody>
                 
                 {% for facture in BDD_facture %}
-                    </tr>
-                        <td><a href ='/tresoreie/{{name}}/{{facture._id}}/delete'>{{facture.numero}}</a></td>
+                    <tr>
+                        <td>{{facture.numero}}</td>
                         <td>{{facture.Type}}</td>
                         
                         <td>{{facture.client}}</td>
@@ -69,7 +69,7 @@
                         {% endif %}
                         <td>{{facture.date_paiement}}</td>
                         <td><a href ='/tresoreie/{{name}}/{{facture._id}}/modify'><img src="{{ url_for('static', filename='edit1.png') }}" class="edit" height="16" width="16" ></a></td>
-                    </tr></a>
+                    </tr>
                 {% endfor %}
                 
                   

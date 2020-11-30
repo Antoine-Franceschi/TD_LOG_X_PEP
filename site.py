@@ -5,8 +5,12 @@ from wtforms import StringField, SubmitField, FloatField, SelectField, DateField
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+import sqlite3
+import csv
 
 app = Flask(__name__)
+app.config['STATIC_AUTO_RELOAD'] = True
+app.config['TEMPLATES_AUTO_RELOAD' ] = True
 app.secret_key = '2d9-E2.)f&é,A$p@fpùsgh+dSU03ê9_'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
@@ -46,9 +50,32 @@ class db_factures(db.Model):
         self.date_paiement= date_paiement
         self.date_echeance = date_echeance
         self.suiveur = suiveur
-    
-        
-Factures = [[1,2,3,4,5,6,7]]
+
+class db_weekly(db.Model):
+    _id = db.Column("id", db.Integer, primary_key= True)
+    name = db.Column(db.String(100))
+    projet = db.Column(db.String(300))
+    action = db.Column(db.String(300))
+    echeance = db.Column(db.String(100))
+    avancement = db.Column(db.String(100))
+    travail_pep = db.Column(db.Integer)
+    travail_gene = db.Column(db.Integer)
+    prospection = db.Column(db.String(100))
+    def __init__(self,name, projet, action, echeance, avancement, travail_pep, travail_gene,prospection):
+        self.name= name
+        self.projet = projet
+        self.action = action 
+        self.avancement = avancement
+        self.echeance = echeance
+        self.travail_pep = travail_pep
+        self.travail_gene = travail_gene
+        self.prospection = prospection
+
+
+
+
+
+
 
 
 ############################## page d'acceuil ##########################
@@ -102,10 +129,6 @@ def init_bd():
         facture.retard = retard1
         db.session.commit()
         
-    
-        
-
-        
 
 def init_retard(date):
     now = datetime.datetime.now()
@@ -138,8 +161,7 @@ def add(name):
         facture= db_factures(request.form['_numero'],request.form['_type'],request.form['_client'],request.form['_montant'],request.form['_etat'],date_echeance, date_paiement, request.form['_suiveur'])
         db.session.add(facture)
         db.session.commit()
-        facture = db_factures.query.all()[0]
-        print(facture.date_echeance)
+        
         
         
         return redirect(url_for('index12', name= name))
@@ -194,8 +216,53 @@ def delete(name,id):
     db.session.commit()
     return redirect(url_for('index12', name= name))
 
+#################### Weekly ##################################
 
+@app.route('/weekly/<name>',methods=["GET","POST"])
+def weekly(name):
+    con = sqlite3.connect("users_copie.sqlite3")
+    outfile = open('bdd_weekly.csv', 'w')
+    outcsv = csv.writer(outfile)
+    cursor = con.execute('select * from db_weekly')
+    #dump column titles (optional)
+    outcsv.writerow(x[0] for x in cursor.description)
+    # dump rows
+    outcsv.writerows(cursor.fetchall())
+    outfile.close()
+    return render_template("tableau_weekly-2.html", name=name, BDD_commentaire=db_weekly.query.all())
 
+@app.route('/weekly/<name>/add',methods=["GET","POST"])
+def add_commentaire(name):
+    if request.method == "POST":
+        
+        commentaire= db_weekly(request.form['name'],request.form['projet'],request.form['action'],request.form['echeance'],request.form['avancement'],request.form['travail_pep'],request.form['travail_gene'],request.form['prospection'])
+        db.session.add(commentaire)
+        db.session.commit()
+        return redirect(url_for('weekly', name= name))
+    return render_template("weekly.html", name=name, BDD_utilisateur=db_utilisateurs.query.all())
+
+@app.route('/weekly/<name>/<int:id>/modify_delete',methods=["GET","POST"])
+def modify_weekly(name,id):
+    commentaire = db_weekly.query.get(id)
+    if request.method == "POST":
+        commentaire.name = request.form['name']
+        commentaire.projet = request.form['projet']
+        commentaire.action = request.form['action']
+        commentaire.avancement = request.form['echeance']
+        commentaire.echeance = request.form['avancement']
+        commentaire.prospection = request.form['prospection']
+        commentaire.travail_pep = request.form['travail_pep']
+        commentaire.travail_gene = request.form['travail_gene']
+        db.session.commit()
+        return redirect(url_for('weekly', name= name))
+    return render_template("weekly_add_delete.html",name=name,commentaire=commentaire)
+
+@app.route('/weekly/<name>/<int:id>/delete',methods=["GET","POST"])
+def delete_weekly(name,id):
+    delete= db_weekly.query.filter_by(_id=id).first()
+    db.session.delete(delete)
+    db.session.commit()
+    return redirect(url_for('weekly', name= name))
 
 
 
