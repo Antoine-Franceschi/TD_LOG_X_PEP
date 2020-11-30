@@ -220,15 +220,17 @@ def delete(name,id):
 
 @app.route('/weekly/<name>',methods=["GET","POST"])
 def weekly(name):
-    con = sqlite3.connect("users_copie.sqlite3")
-    outfile = open('bdd_weekly.csv', 'w')
-    outcsv = csv.writer(outfile)
-    cursor = con.execute('select * from db_weekly')
-    #dump column titles (optional)
-    outcsv.writerow(x[0] for x in cursor.description)
-    # dump rows
-    outcsv.writerows(cursor.fetchall())
-    outfile.close()
+    if True:
+
+        con = sqlite3.connect("users.sqlite3")
+        outfile = open('static/bdd_weekly1.csv', 'w')
+        outcsv = csv.writer(outfile)
+        cursor = con.execute('select * from db_weekly')
+        #dump column titles (optional)
+        outcsv.writerow(x[0] for x in cursor.description)
+        # dump rows
+        outcsv.writerows(cursor.fetchall())
+        outfile.close()
     return render_template("tableau_weekly-2.html", name=name, BDD_commentaire=db_weekly.query.all())
 
 @app.route('/weekly/<name>/add',methods=["GET","POST"])
