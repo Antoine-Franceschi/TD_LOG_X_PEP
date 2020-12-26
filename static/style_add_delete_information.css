@@ -1,0 +1,173 @@
+html {
+    height: 100%;
+    width: 100%;
+    background-color : #272C31;
+    /* background-attachment: fixed;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5); */
+    /* margin-top: 40px; */
+  }
+body {
+    background-color : #272C31;
+    height: 100%;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  
+  }
+.barre_principale{
+   
+    height: 60px;
+    /*margin: auto;*/
+    display: flex;
+    justify-content: space-between;
+    
+    
+   
+}
+.logo_pep{
+    width: 60px;
+    height: 60px;
+}
+ul{
+    list-style-type: none;
+    display:flex;
+    
+    text-decoration:none;
+}
+.logo_pep{
+    float: left;
+    margin: 5px;
+}
+.user_name{
+    margin-top:5px ;
+    
+}
+
+.Junior{
+    
+    margin-top: 12px;
+    display: flex;
+    font-size: 250%;
+}
+
+nav a{
+    font-size: 1.3em;
+    color: white;
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+    text-decoration: none;
+
+}
+ nav li{
+    margin-right: 10px;
+}
+
+
+
+a{
+    text-decoration:none;
+    color:white;
+    display:flex;
+    
+}
+a:hover{
+    opacity: 0.5;
+    
+
+}
+.titre{
+    border: 2px ;
+    border-style: solid;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: lightgrey;
+    font-size:35px;
+}
+.debut1{
+    margin-top: 50px;
+}
+
+.form-numero{
+    text-align: center;
+    font-size: 15px;
+    height: 30px;
+    border: gray;
+    background-color: gray;
+    margin-left: 33%;
+    width: 33%;
+    color:whitesmoke;
+    margin-bottom: 20px;
+    margin-top: 3px;
+}
+
+.form-mdp {
+    text-align: center;
+    font-size: 15px;
+    color:whitesmoke;
+    margin-top: 3px;
+    height: 30px;
+    border: gray;
+    background-color: gray;
+    margin-left: 33%;
+    width: 33%;
+    margin-bottom: 20px;
+}
+.form-jour,.form-mois,.form-année{
+    text-align: center;
+    font-size: 15px;
+    color:whitesmoke;
+    margin-top: 3px;
+    height: 30px;
+    border: gray;
+    background-color: gray;
+    margin-left: 33%;
+    height: 30px;
+    width: 33%;
+    
+
+}
+.form-année{
+    margin-bottom: 20px;
+}
+label{
+    margin-left: 33%;
+}
+.valider{
+    margin-left: 33%;
+    font-size: larger;
+    border-radius: 10px;
+    height: 50px;
+    width: 33%;
+    border-color:rgba(119, 223, 0, 0.797);
+    background-color: transparent;
+    color:rgba(119, 223, 0, 0.797);
+}
+.valider:hover{
+    background-color: rgba(119, 223, 0, 0.797);
+    color: white;
+}
+
+.supprimer{
+    width: 10%;
+    margin-left: 90%;
+    font-size: larger;
+    border-radius: 10px;
+    height: 50px;
+    border-color:rgba(232, 25, 29, 0.797);
+    background-color: transparent;
+    color:rgba(232, 25, 29, 0.797);
+}
+
+.supprimer:hover{
+    background-color: rgba(232, 25, 29, 0.797);
+    color: white;
+}
+
+/*
+.form-mdp,.form-client,.form-montant,.form-etat, .form-jour,.form-mois,.form-année,.form-suiveur,.form-numero {
+outline:none;
+outline-style: solid;
+outline-color:rgb(187, 150, 2) ;*/
+
+

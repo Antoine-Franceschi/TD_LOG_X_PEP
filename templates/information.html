@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "UTF-8"/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_information4.css') }}/>
+        <!-- {{ url_for('static', filename='style_add_delete.css') }}-->
+        <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_tresorier.css' -->
+        
+        <title>PEP-inc</title>
+
+    </head>
+    <body>
+        <div class="barre_principale">
+            <div class="logo_junior">
+                <a href="/home/{{name}}">
+                    <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
+                    <div class="Junior">Ponts Études Projets</div>
+                </a>
+                <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
+                <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
+                
+            </div>
+            <div>
+                <nav>
+                    <ul class="navbar-nav">
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
+                        <!-- {{ url_for('static', filename='settings.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
+                        <!-- {{ url_for('static', filename='shutdown.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
+                    </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </nav>
+            </div>
+        </div>
+        <h1 class="page_title">
+            <a href="/home/{{name}}">
+                <img src={{ url_for('static', filename='back1.png') }} alt="bouton retour">
+            </a> 
+            &nbsp; Information
+        </h1>
+        <hr color="white" style="width: 100%;"> <!-- Séparateur pour distinguer le titre du reste de la page -->
+
+        {% if dsi == 1 %}
+            <button class="valider" type="submit" width="50%">Ajouter utilisateur</button>
+        {% endif %}
+        <form class="form-signin" method="post">
+            
+            <div >
+
+                <div class="form-label-group">
+                    <label for="input_mail">Mail</label>
+                    <br>
+                    <input name="_mail"   class="form-mdp" required="required" value ={{mail}} />
+                </div>
+
+                <div class="form-label-group">
+                    <label for="input_prenom">NOM</label>
+                    <br>
+                    <input name="_name"   class="form-mdp" required="required" value ={{utilisateur_name}} />
+                </div>
+
+                <div class="form-label-group">
+                    <label for="input_mdp">Mot de passe</label>
+                    <br>
+                    <input name="_mdp"  class="form-mdp" required="required" value ={{mdp}} />
+                </div>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <!--<ul class="flashes">-->
+                    {% for message in messages %}
+                    <div class="flashes" >{{ message }}</div>
+                    {% endfor %}
+                    <!--</ul>-->
+                {% endif %}
+            {% endwith %}
+            {% if dsi == 0 %}
+                <button class="valider1" type="submit" width="50%">Enregister les modifications</button>
+            {% endif %}
+        </form>
+        {% if dsi == 1 %}
+            <table class="tableau-style">
+                <thead>
+                    <tr>
+                        <th>Noms</th>
+                        <th>Email</th>
+                        <th>Mot de Passe</th>
+                        <th>Autorisation DSI</th>
+                        <th>Modifier</th>
+                    </tr>
+                </thead>
+
+                <tbody class="case">
+                    {% for utilisateur in BDD_utilisateur %}
+                        <tr>
+                            <td>{{utilisateur.name}}</td>
+                            <td>{{utilisateur.email}}</td>
+                            <td>{{utilisateur.mdp}}</td>
+                            <td>{{utilisateur.dsi}}</td>
+                            <td><a href ='/add_delete_information/{{name}}/{{utilisateur._id}}' ><img src={{ url_for('static', filename='edit1.png') }} class="edit" height="16" width="16" ></a></td>
+                        </tr>
+                    {% endfor %}
+
+                    
+                </tbody>
+            </table>
+        {% endif %}
+        
+
+
+
+    
+    </body>
+</html>

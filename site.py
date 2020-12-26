@@ -24,6 +24,7 @@ class db_utilisateurs(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
     mdp = db.Column(db.String(100))
+    dsi = db.Column(db.Boolean)
 
     def __init__(self, name, email, mdp):
         self.name = name
@@ -102,8 +103,9 @@ def identification():
             flash(u"Erreur d'authentification!")
             return render_template("login_copie.html")
     else:
-        if "name" in session:
-            return redirect(url_for("home",name=session["name"]))
+        #if "name" in session:
+         #   return redirect(url_for("home",name=session["name"]))
+            
         return render_template("login_copie.html")
 
 @app.route('/logout')
@@ -452,6 +454,64 @@ def supprimer(name, week, id):
     db.session.commit()
     return redirect(url_for('agenda', name=name, week=week))
 
+##################### page information #####################
+
+@app.route('/information/<name>',methods=["POST", "GET"])
+
+def information(name):
+    utilisateur = db_utilisateurs.query.filter_by(name=name).first()
+    utilisateur_name=utilisateur.name
+    if request.method == "POST":
+        utilisateur.name = request.form['_name']
+        utilisateur.email = request.form['_mail']
+        utilisateur.mdp = request.form['_mdp']
+        db.session.commit()
+        if utilisateur_name==utilisateur.name:
+            flash(u"Données sauvegardées")
+            return redirect(url_for('information', name= name))
+        else:
+            return redirect(url_for("logout"))
+    
+    utilisateur_name=utilisateur.name
+    mail = utilisateur.email
+    dsi = utilisateur.dsi
+    mdp = utilisateur.mdp
+    
+    print(mail)
+    return render_template("information.html",name=name,utilisateur_name=utilisateur_name,mdp=mdp,mail=mail,dsi=dsi, BDD_utilisateur=db_utilisateurs.query.all()) 
+
+@app.route('/add_delete_information/<name>/<int:id>',methods=["POST", "GET"])
+def add_delete_information(name,id):
+    utilisateur= db_utilisateurs.query.filter_by(_id=id).first()
+    utilisateur_name=utilisateur.name
+    
+    if request.method == "POST":
+        utilisateur.name = request.form['_name_']
+        utilisateur.email = request.form['_mail']
+        utilisateur.mdp = request.form['_mdp']
+        if name!=utilisateur_name:
+            if request.form['_dsi']=='True':
+                utilisateur.dsi = 1
+            if request.form['_dsi']=='False':
+                utilisateur.dsi = 0
+        
+        db.session.commit()
+        if utilisateur_name==utilisateur.name:
+            return redirect(url_for('information', name= name))
+        else:
+            return redirect(url_for("logout"))
+    utilisateur_name=utilisateur.name
+    mdp=utilisateur.mdp
+    mail=utilisateur.email
+    dsi =utilisateur.dsi
+    return render_template("add_delete_information.html",name=name,_name=utilisateur_name,mdp=mdp,mail=mail,dsi=dsi, utilisateur=utilisateur)
+
+@app.route('/information/<name>/<int:id>/delete',methods=["GET","POST"])
+def delete_information(name,id):
+    delete= db_utilisateurs.query.filter_by(_id=id).first()
+    db.session.delete(delete)
+    db.session.commit()
+    return redirect(url_for('information', name= name))
 
 if __name__ == "__main__":
     db.create_all()

@@ -20,7 +20,7 @@
                 <nav>
                     <ul class="navbar-nav">
                         <li class="user_name"><a class="user" href="#">{{username}}</a></li>
-                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
+                        <li class="nav-item"><a href="/information/{{username}}"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
                         <li class="nav-item"><a href='/logout'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>

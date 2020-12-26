@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset= "UTF-8"/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_add_delete_information.css') }}/>
+        <!-- {{ url_for('static', filename='style_add_delete.css') }}-->
+        <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_tresorier.css' -->
+        
+        <title>PEP-inc</title>
+
+    </head>
+    <body>
+        <div class="barre_principale">
+            <div class="logo_junior">
+                <a href="/home/{{name}}">
+                    <img class= "logo_pep" src={{ url_for('static', filename='PEPLOGO.png') }}  alt= "Logo pep"/>
+                    <div class="Junior">Ponts Étude Projets</div>
+                </a>
+                <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
+                <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png' -->
+                
+            </div>
+            <div>
+                <nav>
+                    <ul class="navbar-nav">
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
+                        <!-- {{ url_for('static', filename='settings.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
+                        <li class="nav-item"><a href='/login'><img src={{ url_for('static', filename='shutdown.png') }} alt="bouton shutdown" ></a></li>
+                        <!-- {{ url_for('static', filename='shutdown.png') }}-->
+                        <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
+                    </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </nav>
+            </div>
+        </div>
+        <p class="titre">Information</p>
+        <form class="form-signin" method="post">
+            
+            <div class="information">
+
+                <div class="form-label-group">
+                    <label for="input_mail">Adresse Mail</label>
+                    <br>
+                    <input name="_mail"  id="input_mail" class="form-mdp" required="required" value = {{mail}} />
+                </div>
+
+                <div class="form-label-group">
+                    <label for="input_mdp">NOM</label>
+                    <br>
+                    <input name="_name_"   class="form-mdp" required="required" value = {{_name}} />
+                </div>
+
+                <div class="form-label-group">
+                    <label for="input_mdp">Mot de passe</label>
+                    <br>
+                    <input name="_mdp" class="form-mdp" required="required" value = {{mdp}} />
+                </div>
+                {% if name!= _name %}
+                    <div class="form-label-group">
+                        <label for="input_mdp">Autorisation DSI</label>
+                        <br>
+                        <input name="_dsi"   class="form-mdp" required="required" value = {{dsi}} />
+                    </div>
+                {% endif %}
+                <button class="valider" type="submit" width="50%">Ajouter utilisateur</button>
+            </div>
+
+        </form>
+        {% if name!= _name %} 
+            <div><button onclick="window.location.href = '/information/{{name}}/{{utilisateur._id}}/delete';" class="supprimer">Delete</button></div>
+        {% endif %}
+    
+    </body>
+</html>

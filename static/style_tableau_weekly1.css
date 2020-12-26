@@ -107,12 +107,6 @@ tbody, tr, td, th{
     border: 1px solid #696969;
 }
 
-/*tbody tr:nth-child(even){
-    background-color: #ab732e80;
-}
-tbody tr:nth-child(odd){
-    background-color: #9f6a2980;*/
-}
 
 div.center{
     text-align: center;
