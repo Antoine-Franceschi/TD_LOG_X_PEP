@@ -2,17 +2,17 @@
 <html>
     <head>
         <meta charset= "UTF-8"/>
-        <link rel="stylesheet" href='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_agenda.css'/>
+        <script type="text/javascript" nonce="e4103886214345f092537d86d07" src="//local.adguard.org?ts=1604436218434&amp;type=content-script&amp;dmn=cdn.fbsbx.com&amp;app=com.apple.Safari&amp;css=1&amp;js=1&amp;gcss=1&amp;rel=1&amp;rji=1&amp;sbe=0"></script>
+<script type="text/javascript" nonce="e4103886214345f092537d86d07" src="//local.adguard.org?ts=1604436218434&amp;name=AdGuard%20Extra&amp;type=user-script"></script><link rel="stylesheet" href="{{ url_for('static', filename='style_agenda1.css') }}"/>
         <!-- {{ url_for('static', filename='style_agenda.css') }}-->
         <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_agenda.css' -->
         <title>PEP-inc</title>
-
     </head>
     <body>
         <div class="barre_principale">
             <div class="logo_junior">
-                <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Front_pep_copie.html">
-                    <img class= "logo_pep" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png'  alt= "Logo pep"/>
+                <a href='/home/{{name}}'>
+                    <img class= "logo_pep" src="{{ url_for('static', filename='PEPLOGO.png') }}" alt= "Logo pep"/>
                     <div class="Junior">Ponts Étude Projets</div>
                 </a>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
@@ -22,11 +22,11 @@
             <div>
                 <nav>
                     <ul class="navbar-nav">
-                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
-                        <li class="nav-item"><a href="#"><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' alt="bouton reglage" ></a></li>
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src="{{ url_for('static', filename='settings.png') }}" alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/logout'><img src="{{ url_for('static', filename='shutdown.png') }}" alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -35,8 +35,355 @@
             </div>
         </div>
 
+ 
+        <div id="Messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div id="messages">
+                    {% for message in messages %}
+                    <div class="flashes" > {{ message }} </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+ 
+        <div id="semaines">
+            <a href='/agenda/{{name}}/{{previous_week}}'><img src="{{url_for('static', filename='fleche_gauche_agenda.png')}}" alt="fleche gauche"/> </a>
+            <h2> Semaine {{week}} : {{premier_jour}} {{mois_premier_jour}} {{annee_premier_jour}} -  {{dernier_jour}} {{mois_dernier_jour}} {{annee_dernier_jour}}</h2>
+            <a href='/agenda/{{name}}/{{next_week}}'><img src="{{url_for('static', filename='fleche_droite_agenda.png')}}" alt="fleche droite"/> </a>
+        </div>
+
+      
+
+        <table id="tableau">
+            <thead>
+                <tr>
+                    <th scope="col" class="column">
+                    </th>
+                    <th scope="col" class="column">
+    
+                        <label class="ajouter1" for="check1">
+                            LUNDI {{premier_jour}}
+                            
+                        </label>
+                        <input type="checkbox" id="check1"/>
+                        <div class="modal1">
+                            <div class="newevent">
+                                <label class="modalbutton1" for="check1">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST" >
+                                    <h2> Titre de l'évènement : </h2>
+                                    <input type="text" name="event" id="event"/>
+
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=1>Lundi</option>
+                                        <option value=2>Mardi</option>
+                                        <option value=3>Mercredi</option>
+                                        <option value=4>Jeudi</option>
+                                        <option value=5>Vendredi</option>
+                                        <option value=6>Samedi</option>
+                                        <option value=7>Dimanche</option>
+    
+                                        
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p> Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+                                    
+                                    
+                                    <input  type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+                        </th>
+                    <th scope="col" class="column">
+                        <label class="ajouter2" for="check2">
+                            MARDI {{premier_jour +1}}
+                        </label>
+                        <input type="checkbox" id="check2"/>
+                        <div class="modal2">
+                            <div class="newevent">
+                                <label class="modalbutton2" for="check2">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST">
+                                    <h2> Titre de l'évènement : </h2>
+                                    <input type="text" name="event" id="event"/>
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=2>Mardi</option>
+                                        <option value=1>Lundi</option>
+                                        <option value=3>Mercredi</option>
+                                        <option value=4>Jeudi</option>
+                                        <option value=5>Vendredi</option>
+                                        <option value=6>Samedi</option>
+                                        <option value=7>Dimanche</option>
+    
+                                        
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p> Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+    
+                                    <input type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+    
+                                
+                    </th>
+                    <th scope="col" class="column">
+                        <label class="ajouter3" for="check3">
+                            MERCREDI {{premier_jour+2}}
+                        </label>
+                        <input type="checkbox" id="check3"/>
+                        <div class="modal3">
+                            <div class="newevent">
+                                <label class="modalbutton3" for="check3">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST">
+                                    <h2> Titre de l'évènement : </h2>
+                                    <input type="text" name="event" id="event"/>
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=3>Mercredi</option>
+                                        <option value=1>Lundi</option>
+                                        <option value=2>Mardi</option>
+                                        <option value=4>Jeudi</option>
+                                        <option value=5>Vendredi</option>
+                                        <option value=6>Samedi</option>
+                                        <option value=7>Dimanche</option>
+    
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p> Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+    
+                                    <input type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col" class="column">
+                        <label class="ajouter4" for="check4">
+                            JEUDI {{premier_jour+3}}
+                        </label>
+                        <input type="checkbox" id="check4"/>
+                        <div class="modal4">
+                            <div class="newevent">
+                                <label class="modalbutton4" for="check4">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST">
+                                    <h2> Titre de l'évènement : </h2>
+                                    <input type="text" name="event" id="event"/>
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=4>Jeudi</option>
+                                        <option value=1>Lundi</option>
+                                        <option value=2>Mardi</option>
+                                        <option value=3>Mercredi</option>
+                                        <option value=5>Vendredi</option>
+                                        <option value=6>Samedi</option>
+                                        <option value=7>Dimanche</option>
+    
+                                        
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p> Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+    
+                                    <input type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col" class="column">
+                        <label class="ajouter5" for="check5">
+                            VENDREDI {{premier_jour +4}}
+                        </label>
+                        <input type="checkbox" id="check5"/>
+                        <div class="modal5">
+                            <div class="newevent">
+                                <label class="modalbutton5" for="check5">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST">
+                                    <h2> Titre de l'évènement : </h2>
+                                    <input type="text" name="event" id="event"/>
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=5>Vendredi</option>
+                                        <option value=1>Lundi</option>
+                                        <option value=2>Mardi</option>
+                                        <option value=3>Mercredi</option>
+                                        <option value=4>Jeudi</option>
+                                        <option value=6>Samedi</option>
+                                        <option value=7>Dimanche</option>
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p> Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+    
+                                    <input type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col" class="column">
+                        <label class="ajouter6" for="check6">
+                            SAMEDI {{premier_jour+5}}
+                        </label>
+                        <input type="checkbox" id="check6"/>
+                        <div class="modal6">
+                            <div class="newevent">
+                                <label class="modalbutton6" for="check6">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST">
+                                    <h2> Titre de l'évènement : </h2>
+                                    <input type="text" name="event" id="event"/>
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=6>Samedi</option>
+                                        <option value=1>Lundi</option>
+                                        <option value=2>Mardi</option>
+                                        <option value=3>Mercredi</option>
+                                        <option value=4>Jeudi</option>
+                                        <option value=5>Vendredi</option>
+                                        <option value=7>Dimanche</option>
+    
+                                        
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p> Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+    
+                                    <input type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col" class="column">
+                        <label class="ajouter7" for="check7">
+                            DIMANCHE {{premier_jour+6}}
+                        </label>
+                        <input type="checkbox" id="check7"/>
+                        <div class="modal7">
+                            <div class="newevent">
+                                <label class="modalbutton7" for="check7">
+                                    <img src="{{url_for('static', filename='croix.png')}}" alt="fermer" class="fermer"/>
+                                </label>
+                                <form class="form" method="POST">
+                                    <h2>Titre de l'évènement : </h2> 
+                                    <input type="text" name="event" id="event"/>
+                                    <p> Description de l'évènement</p>
+                                    <input type="text" name="description" id="description"/>
+
+                                    <p> Jour:</p>
+                                    <select name="day" id="day">
+                                        <option value=7>Dimanche</option>
+                                        <option value=1>Lundi</option>
+                                        <option value=2>Mardi</option>
+                                        <option value=3>Mercredi</option>
+                                        <option value=4>Jeudi</option>
+                                        <option value=5>Vendredi</option>
+                                        <option value=6>Samedi</option>
+                                        
+    
+                                        
+                                    </select>
+                                    <p> Heure de début: </p>
+                                    <input type="time" name="horrairedeb" id="horraire"/>
+                                    <p>Heure de fin: </p>
+                                    <input type="time" name="horrairefin" id="horraire"/>
+    
+                                    <input type="submit" value="Ajouter" id="valider"/>
+                                </form>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for t in range(0,52)%}
+                <tr>
+                    {% if time[t]*10%10 ==0 %}
+                        <th scope="row">{{time[t]}} : 00</th>
+                    {% else%}
+                        <th scope="row"></th>
+                    {% endif %}
+                    {%for day in range(0,7)%}
+                    
+                        {% if Nombre_evenements[t][day]==0%}  
+                            {% if time[t]*10%10 !=0 %}
+                                <td class="quart"></td>
+                            {% else%}
+                                <td></td>
+                            {% endif %}
+                        {% else%}  
+                            {% for event in evenement %}
+                                {% if event.week==week %}
+                                    {% if  event.heure_debut==time[t] %}
+                                        {% if event.day==days[day] %}
+                                      
+                                            <td rowspan="{{event.duree}}" {% if time[t]*10%10 !=0 %} class="quart"  {% endif %}>
+                                        
+                                             
+                                                <div id="evenement">
+                                                    <button onclick="window.location.href = '/agenda/{{name}}/{{week}}/{{event._id}}'" class="supprimer">
+                                                        <img src="{{url_for('static', filename='croix.png')}}" alt="supprimer"/>
+                                                    </button>
+                                                    {{event.title}} <br>
+                                                    {{event.debut}} - {{event.fin}} 
+                                                </div>
+                                            </td>
+
+                                        {%endif%}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}  
+                    {% endfor %}
+                </tr>
+
+                
+                {% endfor %}
 
 
+           </tbody>
+        </table>
+
+        
     
     </body>
 </html>

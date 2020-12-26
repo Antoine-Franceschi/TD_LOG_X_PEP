@@ -1,12 +1,13 @@
 #site pep
 from flask import Flask,render_template,url_for,request, redirect, flash,session
-from flask_wtf import FlaskForm
+
 from wtforms import StringField, SubmitField, FloatField, SelectField, DateField
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 import sqlite3
 import csv
+import calendar
 
 app = Flask(__name__)
 app.config['STATIC_AUTO_RELOAD'] = True
@@ -70,12 +71,6 @@ class db_weekly(db.Model):
         self.travail_pep = travail_pep
         self.travail_gene = travail_gene
         self.prospection = prospection
-
-
-
-
-
-
 
 
 ############################## page d'acceuil ##########################
@@ -266,7 +261,196 @@ def delete_weekly(name,id):
     db.session.commit()
     return redirect(url_for('weekly', name= name))
 
+####################" page agenda"############################################
 
+class db_event(db.Model):
+    _id=db.Column("id",db.Integer, primary_key=True)
+    week = db.Column(db.Integer)
+    day= db.Column(db.Integer)
+    title=db.Column(db.String(200))
+    debut = db.Column(db.String(20))
+    fin= db.Column(db.String(20))
+    heure_debut=db.Column(db.Float)
+    heure_fin=db.Column(db.Float)
+    duree=db.Column(db.Integer)
+
+    def __init__(self, week, day, title, debut, fin, heure_debut, heure_fin, duree):
+        self.week=week
+        self.day=day
+        self.title=title
+        self.debut=debut
+        self.fin=fin
+        self.heure_debut=heure_debut
+        self.heure_fin=heure_fin
+        self.duree=duree
+        
+    def count(self, week):
+        Nombre_evenements=[[0 for _ in range(7)] for _ in range(13*4)]
+        evenement_week= self.query.filter_by(week=week) 
+        for evenement in evenement_week:
+            minutes_deb= (evenement.heure_debut-int(evenement.heure_debut))
+            minutes_fin=(evenement.heure_fin-int(evenement.heure_fin))
+            case_debut= int((int(evenement.heure_debut)-8)*4 + minutes_deb/0.25)
+            case_fin= int((int(evenement.heure_fin)-8)*4+ minutes_fin/0.25)
+            if minutes_fin==0 or minutes_fin==0.25 or minutes_fin==0.5 or minutes_fin==0.75:
+                case_fin-=1
+            for i in range (case_debut, case_fin+1):
+                Nombre_evenements[i][evenement.day-1]+=1
+        return Nombre_evenements
+
+days=[1,2,3,4,5,6,7]
+time=[8]
+p=800
+
+for k in range (0, 51):
+    p+=25
+    if p%100==0:
+          time.append(int(p/100))
+    else:
+        time.append(p/100)
+
+
+@app.route('/agenda/<name>/<week>/', methods=['POST', 'GET'])
+def agenda(name, week):
+    init_event_db()
+    premier_jour, mois_premier_jour, annee_premier_jour, dernier_jour, mois_dernier_jour, annee_dernier_jour = info_week(week)
+    init_event_db()
+    previous_week=str((int(week)-1)%52)
+    if previous_week=="0":
+        previous_week="52"
+    next_week=str((int(week)+1)%52)
+    if next_week=="0":
+        next_week="52"
+    if request.method=="POST":
+        title=request.form["event"]
+        debut=request.form["horrairedeb"]
+        fin=request.form["horrairefin"]
+        day=request.form["day"]
+        found_event= db_event.query.filter_by(day= day, week=int(week), title=title, debut=debut, fin=fin).first()
+        if found_event:
+            flash(u"Evènement déjà prévu!")
+            redirect(url_for("agenda", name=name, week=int(week)))
+        if (debut[3:]!="00" and debut[3:]!="15" and  debut[3:]!="30" and  debut[3:]!="45" ) or (fin[3:]!="00" and fin[3:]!="15" and fin[3:]!="30" and fin[3:]!="45" ):
+            flash(u"Format d'horraire incorrect")
+            flash(u"Essayez avec des minutes du type \"00\",\"15\",\"30\" ou \"45\" ")
+            redirect(url_for("agenda", name=name, week=int(week)))
+        else:
+            heure_debut=(float_horaire(debut))
+            heure_fin=(float_horaire(fin))
+            duree= nombre_cases(heure_debut, heure_fin)
+            evnt=db_event(week, day, title, debut, fin, heure_debut, heure_fin, duree)
+            db.session.add(evnt)
+            db.session.commit()
+    return render_template("agenda.html", name=name, week=int(week), premier_jour=premier_jour, mois_premier_jour=nom_du_mois(mois_premier_jour), annee_premier_jour=annee_premier_jour, dernier_jour=dernier_jour, mois_dernier_jour=nom_du_mois(mois_dernier_jour), annee_dernier_jour=annee_dernier_jour, evenement=db_event.query.all() , previous_week=previous_week, next_week=next_week, Nombre_evenements=db_event.count(db_event, week=week), days=days, time=time)
+
+
+
+
+def init_event_db():
+    for _ in db_event.query.all():
+        db.session.commit()
+
+def info_week(w):
+    w=int(w)
+    ajd = datetime.datetime.now()
+    cal = calendar.TextCalendar(firstweekday=0)
+    calendrier = cal.yeardatescalendar(ajd.year, 1)
+    year=[]
+    for cal in calendrier:
+        for month in cal:
+            for week in month:
+                if not inside(year, week):
+                    year.append(week)
+    premier_jour= year[w-1][0]
+    dernier_jour= year[w-1][6]
+    return (premier_jour.day, premier_jour.month, premier_jour.year , dernier_jour.day, dernier_jour.month, dernier_jour.year)
+
+def inside(L,x):
+    for element in L:
+        if element==x:
+            return True
+    return False
+
+
+"""
+def actualise_semaine():
+    date= datetime.datetime.now()
+    week= date.isocalendar()[1]
+    mois=date.month
+    premier_jour=date.day - date.isoweekday() +1
+    dernier_jour=date.day + (7-date.isoweekday())
+    annee=date.year
+    mois_premier_jour=mois
+    mois_dernier_jour=mois
+    annee_premier_jour=date.year
+    annee_dernier_jour=date.year
+
+
+    if date.day==31 and mois==12:
+        annee_dernier_jour=annee+1
+    if date.day==1 and mois==1:
+        annee_premier_jour=annee-1
+    if date.day==1:
+        premier_jour= calendar.mdays[mois-1] - date.isoweekday()
+        mois_premier_jour-=1
+    elif date.day==calendar.mdays[mois]:
+        dernier_jour=7-date.isoweekday()
+        mois_dernier_jour+=1
+        
+    return (week, premier_jour, mois_premier_jour, annee_premier_jour, dernier_jour, mois_dernier_jour, annee_dernier_jour)
+
+    """
+
+def nom_du_mois(numero):
+    if numero==1:
+        return "Janvier"
+    elif numero==2:
+        return "Février"
+    elif numero==3:
+        return "Mars"
+    elif numero==4:
+        return "Avril"
+    elif numero==5:
+        return "Mai"
+    elif numero==6:
+        return "Juin"
+    elif numero==7:
+        return "Juillet"
+    elif numero==8:
+        return "Août"
+    elif numero==9:
+        return "Septembre"
+    elif numero==10:
+        return "Octobre"
+    elif numero==11:
+        return "Novembre"
+    elif numero==12:
+        return "Décembre"
+
+def float_horaire(horaire):
+    heure=int(horaire[:2])
+    minutes=int(horaire[3:])
+    heure+=minutes/60
+    return heure
+
+def nombre_cases(heure_debut, heure_fin):
+    minutes_deb= (heure_debut-int(heure_debut))
+    minutes_fin=(heure_fin-int(heure_fin))
+    case_debut= int((int(heure_debut)-8)*4 + minutes_deb/0.25)
+    case_fin= int((int(heure_fin)-8)*4+ minutes_fin/0.25)
+    if minutes_fin==0 or minutes_fin==0.25 or minutes_fin==0.5 or minutes_fin==0.75:
+            case_fin-=1
+    return case_fin-case_debut +1
+
+
+
+@app.route('/agenda/<name>/<week>/<int:id>/', methods=["POST", "GET"])
+def supprimer(name, week, id):
+   
+    supp= db_event.query.filter_by(_id=id).first()
+    db.session.delete(supp)
+    db.session.commit()
+    return redirect(url_for('agenda', name=name, week=week))
 
 
 if __name__ == "__main__":
