@@ -1,6 +1,5 @@
 #site pep
 from flask import Flask,render_template,url_for,request, redirect, flash,session
-
 from wtforms import StringField, SubmitField, FloatField, SelectField, DateField
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
@@ -8,6 +7,7 @@ import datetime
 import sqlite3
 import csv
 import calendar
+import os
 
 app = Flask(__name__)
 app.config['STATIC_AUTO_RELOAD'] = True
@@ -117,6 +117,7 @@ def logout():
 @app.route('/tresorerie/<name>',methods=["GET","POST"])
 def index12(name):
     init_bd()
+    
     return render_template('Tresorier.html', name=name, BDD_facture = db_factures.query.all())
 
 def init_bd():
@@ -220,7 +221,11 @@ def weekly(name):
     if True:
 
         con = sqlite3.connect("users.sqlite3")
-        outfile = open('static/bdd_weekly1.csv', 'w')
+        script_dir = os.path.dirname(__file__)
+        rel_path = "/static/bdd_weekly1.csv'"
+        abs_file_path = os.path.join(script_dir, rel_path)
+        outfile = open(abs_file_path, 'w')
+        
         outcsv = csv.writer(outfile)
         cursor = con.execute('select * from db_weekly')
         #dump column titles (optional)
@@ -500,6 +505,7 @@ def add_delete_information(name,id):
             return redirect(url_for('information', name= name))
         else:
             return redirect(url_for("logout"))
+    
     utilisateur_name=utilisateur.name
     mdp=utilisateur.mdp
     mail=utilisateur.email
