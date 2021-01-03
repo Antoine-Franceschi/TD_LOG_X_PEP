@@ -224,7 +224,7 @@ def weekly(name):
         script_dir = os.path.dirname(__file__)
         rel_path = "/static/bdd_weekly1.csv'"
         abs_file_path = os.path.join(script_dir, rel_path)
-        outfile = open(abs_file_path, 'w')
+        outfile = open("static/bdd_weekly.csv", 'w')
         
         outcsv = csv.writer(outfile)
         cursor = con.execute('select * from db_weekly')
