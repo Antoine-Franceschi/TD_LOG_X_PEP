@@ -519,6 +519,11 @@ def delete_information(name,id):
     db.session.commit()
     return redirect(url_for('information', name= name))
 
+#################### statistiques ################################"
+@app.route('/statistiques/<name>')
+def statistiques(name):
+    return render_template('Statistiques.html', name=name)
+    
 if __name__ == "__main__":
     db.create_all()
     app.run(debug=True)
