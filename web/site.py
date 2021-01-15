@@ -79,7 +79,7 @@ class db_weekly(db.Model):
 def home(name):
     
     if "name" in session:
-        return render_template("Front_pep_copie.html", username=session["name"])
+        return render_template("Front_pep_copie.html", username=session["name"], this_week=int(datetime.datetime.now().isocalendar()[1])+1)
     else:
         return redirect(url_for('identification'))
 
@@ -336,11 +336,11 @@ def agenda(name, week):
         found_event= db_event.query.filter_by(day= day, week=int(week), title=title, debut=debut, fin=fin).first()
         if found_event:
             flash(u"Evènement déjà prévu!")
-            redirect(url_for("agenda", name=name, week=int(week)))
+            return redirect(url_for("agenda", name=name, week=int(week)))
         if (debut[3:]!="00" and debut[3:]!="15" and  debut[3:]!="30" and  debut[3:]!="45" ) or (fin[3:]!="00" and fin[3:]!="15" and fin[3:]!="30" and fin[3:]!="45" ):
             flash(u"Format d'horraire incorrect")
             flash(u"Essayez avec des minutes du type \"00\",\"15\",\"30\" ou \"45\" ")
-            redirect(url_for("agenda", name=name, week=int(week)))
+            return redirect(url_for("agenda", name=name, week=int(week)))
         else:
             heure_debut=(float_horaire(debut))
             heure_fin=(float_horaire(fin))
@@ -521,4 +521,4 @@ def delete_information(name,id):
 
 if __name__ == "__main__":
     db.create_all()
-    app.run()
+    app.run(debug=True)
