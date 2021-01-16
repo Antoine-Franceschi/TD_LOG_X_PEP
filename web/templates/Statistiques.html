@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset= "UTF-8"/>
-        <link rel="stylesheet" href='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_stat.css'/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_stat.css') }}/>
+
         <!-- {{ url_for('static', filename='style_stat.css') }}-->
         <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_stat.css' -->
         <title>PEP-inc</title>
@@ -11,8 +12,8 @@
     <body>
         <div class="barre_principale">
             <div class="logo_junior">
-                <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Front_pep_copie.html">
-                    <img class= "logo_pep" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png'  alt= "Logo pep"/>
+                <a href='/home/{{name}}'>
+                    <img class= "logo_pep" src="{{ url_for('static', filename='PEPLOGO.png') }}" alt= "Logo pep"/>
                     <div class="Junior">Ponts Étude Projets</div>
                 </a>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
@@ -22,11 +23,11 @@
             <div>
                 <nav>
                     <ul class="navbar-nav">
-                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
-                        <li class="nav-item"><a href="#"><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' alt="bouton reglage" ></a></li>
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/logout'><img src="{{ url_for('static', filename='shutdown.png') }}" alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -35,6 +36,58 @@
             </div>
         </div>
 
+        <p class="titre">Statistiques</p>
+
+        <div class="categories">
+            <div class="ligne">
+                <div id="Classement_prospecteur">
+                    <p> Classement des prospecteurs</p>
+                    <img>
+
+                </div>
+
+                <div id="secteur">
+                    <p> Nombre de mails envoyés en fonction du secteur</p>
+                    <img>
+                </div>
+            </div>
+
+            <div class="ligne">
+                <div id="mails_semaine">
+                    <p> Nombre de mails envoyés en fonctions du jour de la semaine</p>
+                    <img>
+                </div>
+
+                <div id="mails_journee">
+                    <p> Nombre de mails envoyés en fonctions de l'heure de la journée</p>
+                    <img>
+                </div>
+
+            </div>
+
+            
+            <div class="ligne">
+            
+                <div id= "reponse_jour">
+                    <p> Pourcentage de reponse en fonction du jour d'envoi</p>
+                    <img>
+                </div> 
+
+                <div id= "reponse_heure">
+                    <p> Pourcentage de reponse en fonction de l'heure d'envoi</p>
+                    <img>
+                </div> 
+            </div>
+
+            <div class="ligne">
+                <div id = "type reponse">
+                    <p> Nombre de mail par type de reponse</p>
+                    <img>
+                </div>
+                <div></div>
+            </div>
+
+        </div>
 
 
     
