@@ -3,7 +3,7 @@
     <head>
         <meta charset= "UTF-8"/>
         <link rel="stylesheet" href={{ url_for('static', filename='style_stat.css') }}/>
-
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
         <!-- {{ url_for('static', filename='style_stat.css') }}-->
         <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_stat.css' -->
         <title>PEP-inc</title>
@@ -42,50 +42,279 @@
             <div class="ligne">
                 <div id="Classement_prospecteur">
                     <p> Classement des prospecteurs</p>
-                    <img>
+
+                    <p> {{prospecteurs}}</p>
+                    <p>{{classement_prospecteurs}}</p>
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="prospecteurs"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('prospecteurs').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["mai-linh", "arnaud", "antoine"],
+                            datasets: [{
+                                label: "classement prospecteurs",
+                                data: [1, 1, 0],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
 
                 </div>
 
-                <div id="secteur">
-                    <p> Nombre de mails envoyés en fonction du secteur</p>
-                    <img>
-                </div>
+               
             </div>
 
+            <div class="ligne">
+                <div id="secteur">
+                    <p> Nombre de mails envoyés en fonction du secteur</p>
+                    
+                    <p> {{secteurs}}</p>
+                    <p>{{mails_par_secteur}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="s"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('s').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Automobile", "aeronotique"],
+                            datasets: [{
+                                label: "Nombre de mails envoyés en fonction du secteur",
+                                data: [1, 20],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+
+        
+
+                <div id="secteur">
+                    <p> Pourcentage de mails envoyés en fonction du secteur</p>
+                    
+                    <p> {{secteurs}}</p>
+                    <p>{{pourcentage_mails_par_secteur}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="pcsecteur"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('pcsecteur').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Aeronotique", "Automobile"],
+                            datasets: [{
+                                label: "Pourcentage de mails envoyés en fonction du secteur",
+                                data: [0.6, 0.3],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+
+            </div>
+
+
+               
             <div class="ligne">
                 <div id="mails_semaine">
                     <p> Nombre de mails envoyés en fonctions du jour de la semaine</p>
-                    <img>
+                      
+                    <p> {{jours}}</p>
+                    <p>{{nombre_mails_jours}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="jours"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('jours').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
+                            datasets: [{
+                                label: "nombre de mails envoyés en fonction du jour de la semaine",
+                                data: [10, 20, 50, 30, 30, 6, 0],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                    
                 </div>
 
-                <div id="mails_journee">
-                    <p> Nombre de mails envoyés en fonctions de l'heure de la journée</p>
-                    <img>
+                <div id="mails_semaine">
+                    <p> Pourcentage de mails envoyés en fonctions du jour de la semaine</p>
+                      
+                    <p> {{jours}}</p>
+                    <p>{{pourcentage_mails_jours}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="pcjours"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('pcjours').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
+                            datasets: [{
+                                label: "Pourcentage de mails envoyés en fonction du jour de la semaine",
+                                data: [0.1, 0.2, 0.50, 0.1, 0.1, 0, 0],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                    
                 </div>
 
             </div>
 
-            
             <div class="ligne">
-            
                 <div id= "reponse_jour">
-                    <p> Pourcentage de reponse en fonction du jour d'envoi</p>
-                    <img>
-                </div> 
+                    <p> Nombre de reponse en fonction du jour d'envoi </p>
 
-                <div id= "reponse_heure">
-                    <p> Pourcentage de reponse en fonction de l'heure d'envoi</p>
-                    <img>
-                </div> 
-            </div>
+                    <p> {{jours}}</p>
+                    <p>{{reponses_jours}}</p>
 
-            <div class="ligne">
-                <div id = "type reponse">
-                    <p> Nombre de mail par type de reponse</p>
-                    <img>
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="rep"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('rep').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
+                            datasets: [{
+                                label: "Nombre de reponses en fonction du jour d'envoi",
+                                data: [10, 15, 50, 12, 10, 5, 0],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
                 </div>
-                <div></div>
+
+                <div id= "reponse_jour">
+                    <p> Pourcentage de reponse en fonction du jour d'envoi </p>
+
+                    <p> {{jours}}</p>
+                    <p>{{pourcentage_reponses_jours}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="pcrep"  width="100"  height="100"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('pcrep').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
+                            datasets: [{
+                                label: "Pourcentage de reponses en fonction du jour d'envoi",
+                                data: [0.1, 0.2, 0.3, 0.3, 0.1, 0, 0],
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
             </div>
+           
 
         </div>
 
