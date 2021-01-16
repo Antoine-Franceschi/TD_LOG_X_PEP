@@ -108,6 +108,8 @@ a:hover{
     color:whitesmoke;
  }
 
+
+
  .form-control:focus{
     outline:none;
     outline-style: solid;
