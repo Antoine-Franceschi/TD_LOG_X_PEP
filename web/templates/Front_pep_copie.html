@@ -62,7 +62,7 @@
                     </a>
                 </div>
                 <div class="carré_agenda">
-                    <a  href='/agenda/{{username}}/{{3}}' class= "card">
+                    <a  href='/agenda/{{username}}/{{this_week}}' class= "card">
                         
                         <div><img class="agenda" src={{ url_for('static', filename='agenda.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='agenda.png') }}-->
@@ -73,7 +73,7 @@
             </div>
             <div class="stat_money">
                 <div class="carré_stat">
-                    <a href='#' class="card">
+                    <a href='/statistiques/{{username}}' class="card">
                         
                         <div><img class="Statistiques" src={{ url_for('static', filename='statistics.png') }} alt=""></div>
                         <!-- {{ url_for('static', filename='statistics.png') }}-->
