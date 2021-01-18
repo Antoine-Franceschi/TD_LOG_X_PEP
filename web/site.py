@@ -196,7 +196,7 @@ class db_prospection(db.Model):
         #on commence par compter le nombre de mails
         nb=0
      
-        jours=["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+        jours=['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
         nombre_mails_jours=[0]*7
         reponses_jours= [0]*7
         for mail in self.query.all():
@@ -728,13 +728,10 @@ def statistiques(name):
     classement_prospecteurs,  prospecteurs= db_prospection.classement_prospecteur(db_prospection)
     classement_prospecteurs.sort(reverse= True)
 
-    with open('web\data_stat\classement_prospecteurs.json', 'w') as data_prospecteurs:
-        data_prospecteurs.write(json.dumps(classement_prospecteurs))
-
-    
 
     mails_par_secteur , secteurs = db_prospection.mails_secteur(db_prospection)
     pourcentage_mails_par_secteur, secteurs= db_prospection.mails_secteur(db_prospection, True)
+  
 
     jours, nombre_mails_jours, reponses_jours= db_prospection.envois_reponses_jour_semaine(db_prospection)
     jours, pourcentage_mails_jours, pourcentage_reponses_jours=db_prospection.envois_reponses_jour_semaine(db_prospection, True)
