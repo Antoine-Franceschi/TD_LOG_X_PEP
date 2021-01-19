@@ -75,3 +75,100 @@ a:hover{
     
 
 }
+.titre{
+    border: 2px ;
+    border-style: solid;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: lightgrey;
+    font-size:35px;
+}
+.debut1{
+    margin-top: 50px;
+}
+
+.form-numero{
+    text-align: center;
+    font-size: 15px;
+    height: 30px;
+    border: gray;
+    background-color: gray;
+    margin-left: 33%;
+    width: 33%;
+    color:whitesmoke;
+    margin-bottom: 20px;
+    margin-top: 3px;
+}
+
+.form-destinataire,.form-client,.form-titre,.form-prix, .form-suiveur{
+    text-align: center;
+    font-size: 15px;
+    color:whitesmoke;
+    margin-top: 3px;
+    height: 30px;
+    border: gray;
+    background-color: gray;
+    margin-left: 33%;
+    width: 33%;
+    margin-bottom: 20px;
+}
+
+.form-corps{
+    text-align: left;
+    font-size: 15px;
+    color:whitesmoke;
+    margin-top: 3px;
+    height: 300px;
+    border: gray;
+    background-color: gray;
+    margin-left: 33%;
+    width: 33%;
+    margin-bottom: 20px;
+    cursor: pointer ;
+}
+
+
+label{
+    margin-left: 33%;
+}
+
+button{
+    margin-left: 43%;
+    font-size: larger;
+    border-radius: 10px;
+    height: 50px;
+    border-color:rgba(119, 223, 0, 0.797);
+    background-color: transparent;
+    color:rgba(119, 223, 0, 0.797);
+}
+button:hover{
+    background-color: rgba(119, 223, 0, 0.797);
+    color: white;
+}
+
+fieldset {
+    display: block;
+    margin-left: 33%;
+    margin-right: 34%;
+    text-align: left;
+
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+
+    border: 2px groove (internal value);
+  }
+
+
+
+
+
+/*
+.form-mdp,.form-client,.form-montant,.form-etat, .form-jour,.form-mois,.form-année,.form-suiveur,.form-numero {
+outline:none;
+outline-style: solid;
+outline-color:rgb(187, 150, 2) ;*/
+
+

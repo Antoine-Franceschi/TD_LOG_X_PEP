@@ -73,6 +73,57 @@ class db_weekly(db.Model):
         self.travail_gene = travail_gene
         self.prospection = prospection
 
+class db_pep_recrute(db.Model):
+    _id = db.Column("id", db.Integer, primary_key= True)
+    suiveur = db.Column(db.String(100))
+    departement = db.Column(db.String(100))
+    destinataire = db.Column(db.String(100))
+    titre = db.Column(db.String(150))
+    prix = db.Column(db.Integer)
+    client = db.Column(db.String(100))
+    corps_mail = db.Column(db.String(10000))
+
+    def __init__(self, suiveur, departement, destinataire, titre, prix, client, corps_mail): 
+        self.suiveur= suiveur 
+        self.departement = departement 
+        self.destinataire = destinataire 
+        self.titre = titre 
+        self.prix = prix 
+        self.client = client
+        self.corps_mail = corps_mail
+
+class db_prospection(db.Model):
+    _id = db.Column("id", db.Integer, primary_key= True)
+    suiveur = db.Column(db.String(100))
+    client_sexe = db.Column(db.String(100))
+    client_nom = db.Column(db.String(100))
+    client_prenom = db.Column(db.String(100))
+    client_entreprise = db.Column(db.String(100))
+    client_poste = db.Column(db.String(100))
+    client_promo = db.Column(db.Integer)
+    client_telephone = db.Column(db.String(100))
+    client_mail = db.Column(db.String(100))
+    mode_contact = db.Column(db.String(100))
+    date_envoi = db.Column(db.String(100))
+    ancien_ponts = db.Column(db.Boolean)
+    reponse = db.Column(db.Boolean)
+    date_relance = db.Column(db.String(100))
+
+    def __init__(self, suiveur, client_sexe, client_nom, client_prenom, client_entreprise, client_poste, client_promo, client_telephone, client_mail, mode_contact, date_envoi, ancien_ponts, reponse, date_relance):
+        self.suiveur = suiveur
+        self.client_sexe = client_sexe
+        self.client_nom = client_nom
+        self.client_prenom = client_prenom
+        self.client_entreprise = client_entreprise
+        self.client_poste = client_poste
+        self.client_promo = client_promo
+        self.client_telephone = client_telephone
+        self.client_mail = client_mail
+        self.mode_contact = mode_contact
+        self.date_envoi = date_envoi
+        self.ancien_ponts = ancien_ponts
+        self.reponse = reponse
+        self.date_relance = date_relance
 
 ############################## page d'acceuil ##########################
 @app.route('/home/<name>')
@@ -518,6 +569,52 @@ def delete_information(name,id):
     db.session.delete(delete)
     db.session.commit()
     return redirect(url_for('information', name= name))
+
+
+##################### page pep recrute #####################
+@app.route('/pep_recrute/<name>',methods=["GET","POST"])
+def page_pep_recrute(name):
+    return(render_template("pep_recrute.html", name=name))
+
+def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, piece_jointe_nom, piece_jointe_chemin, template_chemin):
+    Fromadd = mail_expediteur # sous la forme d'une chaine de caractère
+    Toadd = mail_destinataire # sous la forme d'une chaine de caractère
+
+    message = MIMEMultipart()    # Création de l'objet "message"
+    message['From'] = Fromadd
+    message['To'] = Toadd
+    message['Subject'] = sujet # Objet du mail (pour les PEP recrute : "Ponts Etudes Projets - Junior Entreprise")
+    msg = corps_mail # Message à envoyer
+
+    message.attach(MIMEText(msg.encode('utf-8'), 'plain', 'utf-8'))    # Attache du message à l'objet "message", et encodage en UTF-8
+
+    nom_fichier = piece_jointe_nom # Spécification du nom de la pièce jointe
+    piece = open(piece_jointe_chemin, "rb") # Ouverture du fichier
+    part = MIMEBase('application', 'octet-stream') # Encodage de la pièce jointe en Base64
+    part.set_payload((piece).read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "piece; filename= %s" % nom_fichier)
+    message.attach(part) # Attache de la pièce jointe à l'objet "message" 
+
+    f = open(template_chemin)
+
+    html = f.read()
+    part2 = MIMEText(html, 'html')
+    message.attach(part2)
+
+    serveur = smtplib.SMTP('smtp.gmail.com', 587) # Connexion au serveur sortant (en précisant son nom et son port)
+    serveur.starttls() # Spécification de la sécurisation
+    serveur.login(Fromadd, expediteur_mdp) # Authentification
+    texte= message.as_string().encode('utf-8') # Conversion de l'objet "message" en chaine de caractère et encodage en UTF-8
+    serveur.sendmail(Fromadd, Toadd, texte) # Envoi du mail
+    serveur.quit() # Déconnexion du serveur
+    return 0
+
+##################### page prospection #####################
+@app.route('/prospection/<name>',methods=["GET","POST"])
+
+def page_prospection(name):
+    return(render_template("Email_front.html", name=name))
 
 if __name__ == "__main__":
     db.create_all()
