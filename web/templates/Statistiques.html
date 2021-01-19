@@ -2,7 +2,9 @@
 <html>
     <head>
         <meta charset= "UTF-8"/>
-        <link rel="stylesheet" href='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_stat.css'/>
+        <link rel="stylesheet" href={{ url_for('static', filename='style_stat.css') }}/>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+        <script type="text/json" src="data_stat\classement_prospecteurs.json"></script>
         <!-- {{ url_for('static', filename='style_stat.css') }}-->
         <!-- '/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/style_stat.css' -->
         <title>PEP-inc</title>
@@ -11,8 +13,8 @@
     <body>
         <div class="barre_principale">
             <div class="logo_junior">
-                <a href="/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/templates/Front_pep_copie.html">
-                    <img class= "logo_pep" src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/PEPLOGO.png'  alt= "Logo pep"/>
+                <a href='/home/{{name}}'>
+                    <img class= "logo_pep" src="{{ url_for('static', filename='PEPLOGO.png') }}" alt= "Logo pep"/>
                     <div class="Junior">Ponts Étude Projets</div>
                 </a>
                 <!-- {{ url_for('static', filename='PEPLOGO.png') }}-->
@@ -22,11 +24,11 @@
             <div>
                 <nav>
                     <ul class="navbar-nav">
-                        <li class="user_name"><a class="user" href="#">Antoine Franceschi</a></li>
-                        <li class="nav-item"><a href="#"><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' alt="bouton reglage" ></a></li>
+                        <li class="user_name"><a class="user" href="#">{{name}}</a></li>
+                        <li class="nav-item"><a href="#"><img src={{ url_for('static', filename='settings.png') }} alt="bouton reglage" ></a></li>
                         <!-- {{ url_for('static', filename='settings.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/settings.png' -->
-                        <li class="nav-item"><a href='/login'><img src='/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' alt="bouton shutdown" ></a></li>
+                        <li class="nav-item"><a href='/logout'><img src="{{ url_for('static', filename='shutdown.png') }}" alt="bouton shutdown" ></a></li>
                         <!-- {{ url_for('static', filename='shutdown.png') }}-->
                         <!--'/Users/christinevescovali-franceschi/Desktop/Projet_TD_LOG/TD_LOG_X_PEP/static/shutdown.png' -->
                     </ul>
@@ -35,6 +37,293 @@
             </div>
         </div>
 
+        <p class="titre">Statistiques</p>
+
+        <div class="categories">
+            <div class="ligne">
+                <div id="Classement_prospecteur">
+                    <p> Classement des prospecteurs</p>
+
+                    <p> {{prospecteurs}}</p>
+                    <p>{{classement_prospecteurs}}</p>
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="prospecteurs"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+
+                   
+                        var ctx = document.getElementById('prospecteurs').getContext("2d");
+                        var noms = []
+                        {% for prospecteur in prospecteurs%}
+                            
+                            noms.push(' {{prospecteur}} ')
+                        {% endfor %}
+
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels:noms,
+                            datasets: [{
+                                label: "prospecteur : ",
+                                data: {{classement_prospecteurs}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+
+               
+            </div>
+
+            <div class="ligne">
+                <div id="secteur">
+                    <p> Nombre de mails envoyés en fonction du secteur</p>
+                    
+                    <p> {{secteurs}}</p>
+                    <p>{{mails_par_secteur}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="s"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('s').getContext("2d");
+                        var noms = []
+                        {% for secteur in secteurs%}
+                            
+                            noms.push(' {{secteur}} ')
+                        {% endfor %}
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: noms,
+                            datasets: [{
+                                label: "Nombre de mails : ",
+                                data: {{mails_par_secteur}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+
+        
+
+                <div id="secteur">
+                    <p> Pourcentage de mails envoyés en fonction du secteur</p>
+                    
+                    <p> {{secteurs}}</p>
+                    <p>{{pourcentage_mails_par_secteur}}</p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="pcsecteur"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('pcsecteur').getContext("2d");
+                        var noms = []
+                        {% for secteur in secteurs%}
+                            
+                            noms.push(' {{secteur}} ')
+                        {% endfor %}
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: noms,
+                            datasets: [{
+                                label: "Pourcentage de mails : ",
+                                data: {{pourcentage_mails_par_secteur}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+
+            </div>
+
+
+               
+            <div class="ligne">
+                <div id="mails_semaine">
+                    <p> Nombre de mails envoyés en fonctions du jour de la semaine</p>
+
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="jours"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('jours').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+                            datasets: [{
+                                label: "Nombre de mails : ",
+                                data:{{nombre_mails_jours}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                    
+                </div>
+
+                <div id="mails_semaine">
+                    <p> Pourcentage de mails envoyés en fonctions du jour de la semaine</p>
+                      
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="pcjours"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('pcjours').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+                            datasets: [{
+                                label: "Pourcentage de mails : ",
+                                data: {{pourcentage_mails_jours}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                    
+                </div>
+
+            </div>
+
+            <div class="ligne">
+                <div id= "reponse_jour">
+                    <p> Nombre de reponse en fonction du jour d'envoi </p>
+
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="rep"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('rep').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels:   ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+                            datasets: [{
+                                label: "Nombre de réponses",
+                                data: {{reponses_jours}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+
+                <div id= "reponse_jour">
+                    <p> Pourcentage de reponse en fonction du jour d'envoi </p>
+
+                    <div style="width:70%;" class="chart">
+          
+                        <canvas id="pcrep"  width="100"  height="100" margin-left="20px"></canvas>
+                    
+                        
+                    </div>
+
+                    <script>
+                   
+                   
+
+                        var ctx = document.getElementById('pcrep').getContext("2d");
+                        var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels:  ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+                            datasets: [{
+                                label: "Pourcentage de réponses ",
+                                data: {{pourcentage_reponses_jours}},
+                                borderColor: 'rgb(255, 99, 132)',
+                               
+                            }]
+                        }
+                        });
+                        
+                                                
+                        
+                    </script>
+
+                </div>
+            </div>
+           
+
+        </div>
 
 
     

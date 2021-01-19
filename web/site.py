@@ -8,6 +8,7 @@ import sqlite3
 import csv
 import calendar
 import os
+import json
 
 app = Flask(__name__)
 app.config['STATIC_AUTO_RELOAD'] = True
@@ -99,6 +100,7 @@ class db_prospection(db.Model):
     client_nom = db.Column(db.String(100))
     client_prenom = db.Column(db.String(100))
     client_entreprise = db.Column(db.String(100))
+    client_secteur= db.Column(db.String(100))
     client_poste = db.Column(db.String(100))
     client_promo = db.Column(db.Integer)
     client_telephone = db.Column(db.String(100))
@@ -109,12 +111,13 @@ class db_prospection(db.Model):
     reponse = db.Column(db.Boolean)
     date_relance = db.Column(db.String(100))
 
-    def __init__(self, suiveur, client_sexe, client_nom, client_prenom, client_entreprise, client_poste, client_promo, client_telephone, client_mail, mode_contact, date_envoi, ancien_ponts, reponse, date_relance):
+    def __init__(self, suiveur, client_sexe, client_nom, client_prenom, client_entreprise, client_secteur,  client_poste, client_promo, client_telephone, client_mail, mode_contact, date_envoi, ancien_ponts, reponse, date_relance):
         self.suiveur = suiveur
         self.client_sexe = client_sexe
         self.client_nom = client_nom
         self.client_prenom = client_prenom
         self.client_entreprise = client_entreprise
+        self.client_secteur=client_secteur
         self.client_poste = client_poste
         self.client_promo = client_promo
         self.client_telephone = client_telephone
@@ -125,12 +128,112 @@ class db_prospection(db.Model):
         self.reponse = reponse
         self.date_relance = date_relance
 
+
+    #fonctions pour les stats
+    def annees_du_mandat(self):
+        month=datetime.datetime.now().month
+        year= datetime.datetime.now().year
+        #on cherche ou on se situe dans le mandat pour prendre les mails du bon mandat
+        #soit on est encore dans la partir mai-décembre (donc on n'a pas changé d'année)
+        if month>=5:
+            annee_debut_mandat=year
+            annee_fin_mandat=year+1
+        #soit on est dans la partie janvier_avril, donc on doit actualisé l'année en fonction de l'année actuelle
+        if month<5:
+            annee_debut_mandat=year-1
+            annee_fin_mandat=year
+        return annee_debut_mandat, annee_fin_mandat
+    
+    def mail_dans_le_mandat(self, mail):
+        date= mail.date_envoi
+        annee_mail= int(date[6:])
+        mois_mail=int(date[3:5])
+        annee_debut_mandat, annee_fin_mandat = self.annees_du_mandat(self)
+        #on prend les mails depuis mai de debut de mandat jusque avril fin mandat (année d'après)
+        if ( mois_mail>=5  and annee_mail== annee_debut_mandat) or (mois_mail<5 and annee_mail==annee_fin_mandat):
+            return True
+        else:
+            return False
+
+    def classement_prospecteur(self):
+        mails_par_prospecteur=[]
+        prospecteurs=[]
+    
+        for mail in self.query.all():
+            if self.mail_dans_le_mandat(self, mail):     #erreur too many argument mais ca marche quand meme
+                if mail.suiveur in prospecteurs:
+                    indice=prospecteurs.index(mail.suiveur)
+                    mails_par_prospecteur[indice]+= 1
+                else:
+                    prospecteurs.append(mail.suiveur)
+                    mails_par_prospecteur.append(1)
+        return mails_par_prospecteur, prospecteurs
+
+    def mails_secteur(self, pourcentage=False):
+        mails_par_secteur=[]
+        secteur=[]
+        nb=0
+        for mail in self.query.all():
+            if self.mail_dans_le_mandat(self, mail):
+                nb+=1
+                if mail.client_secteur in secteur:
+                    indice=secteur.index(mail.client_secteur)
+                    mails_par_secteur[indice]+= 1
+                else:
+                    secteur.append(mail.client_secteur)
+                    mails_par_secteur.append(1)
+
+        if pourcentage:
+            for i in range(len(mails_par_secteur)):
+                if nb!=0:
+                    mails_par_secteur[i]= int(mails_par_secteur[i]*10000/nb)/100
+
+
+        return mails_par_secteur, secteur
+
+    #pourcentage des mails envoyés et réponses recues en fonction du jour de l'envoi du mail
+    def envois_reponses_jour_semaine(self, pourcentage=False):
+        #on commence par compter le nombre de mails
+        nb=0
+     
+        jours=['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+        nombre_mails_jours=[0]*7
+        reponses_jours= [0]*7
+        for mail in self.query.all():
+            if self.mail_dans_le_mandat(self, mail):
+                nb+=1
+       
+                #forme de la date "YYYY-MM-DD"
+                isodate= mail.date_envoi[6:]+ "-" + mail.date_envoi[3:5] +"-" + mail.date_envoi[0:2]
+                jour_semaine=datetime.datetime.fromisoformat(isodate).isocalendar()[2] #ca prend le jour de la semaine associé a la date
+                nombre_mails_jours[jour_semaine-1]+=1
+                reponses_jours[jour_semaine-1]+=int(mail.reponse)
+        if pourcentage: 
+            for i in range (len(nombre_mails_jours)):
+                if nombre_mails_jours[i]!=0:
+                    reponses_jours[i]/= nombre_mails_jours[i]
+                if nb!=0:
+                    nombre_mails_jours[i]/=nb
+                nombre_mails_jours[i]=int( nombre_mails_jours[i]*10000)/100 #pour avoir un pourcentage tronqué
+                
+                reponses_jours[i]=int(reponses_jours[i]*10000)/100 #pareil
+
+        return jours, nombre_mails_jours, reponses_jours
+
+
+
+
+        
+
+
+
+
 ############################## page d'acceuil ##########################
 @app.route('/home/<name>')
 def home(name):
     
     if "name" in session:
-        return render_template("Front_pep_copie.html", username=session["name"])
+        return render_template("Front_pep_copie.html", username=session["name"], this_week=int(datetime.datetime.now().isocalendar()[1])+1)
     else:
         return redirect(url_for('identification'))
 
@@ -387,11 +490,11 @@ def agenda(name, week):
         found_event= db_event.query.filter_by(day= day, week=int(week), title=title, debut=debut, fin=fin).first()
         if found_event:
             flash(u"Evènement déjà prévu!")
-            redirect(url_for("agenda", name=name, week=int(week)))
+            return redirect(url_for("agenda", name=name, week=int(week)))
         if (debut[3:]!="00" and debut[3:]!="15" and  debut[3:]!="30" and  debut[3:]!="45" ) or (fin[3:]!="00" and fin[3:]!="15" and fin[3:]!="30" and fin[3:]!="45" ):
             flash(u"Format d'horraire incorrect")
             flash(u"Essayez avec des minutes du type \"00\",\"15\",\"30\" ou \"45\" ")
-            redirect(url_for("agenda", name=name, week=int(week)))
+            return redirect(url_for("agenda", name=name, week=int(week)))
         else:
             heure_debut=(float_horaire(debut))
             heure_fin=(float_horaire(fin))
@@ -616,6 +719,32 @@ def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_
 def page_prospection(name):
     return(render_template("Email_front.html", name=name))
 
+#################### statistiques ################################"
+
+def liste_en_string(L):
+    chaine="["
+    for element in L[:len(L)-1]:
+        chaine+="\'"+ str(element)+ "\'" + ","
+    chaine+="\'" + str(L[len(L)-1]) + "\'"+"]"
+    return chaine
+
+@app.route('/statistiques/<name>')
+def statistiques(name):
+   
+    classement_prospecteurs,  prospecteurs= db_prospection.classement_prospecteur(db_prospection)
+    classement_prospecteurs.sort(reverse= True)
+
+
+    mails_par_secteur , secteurs = db_prospection.mails_secteur(db_prospection)
+    pourcentage_mails_par_secteur, secteurs= db_prospection.mails_secteur(db_prospection, True)
+  
+
+    jours, nombre_mails_jours, reponses_jours= db_prospection.envois_reponses_jour_semaine(db_prospection)
+    jours, pourcentage_mails_jours, pourcentage_reponses_jours=db_prospection.envois_reponses_jour_semaine(db_prospection, True)
+
+    
+    return render_template('Statistiques.html', name=name, prospecteurs=prospecteurs, classement_prospecteurs=classement_prospecteurs, secteurs=secteurs, mails_par_secteur=mails_par_secteur, pourcentage_mails_par_secteur=pourcentage_mails_par_secteur,  jours=jours, nombre_mails_jours=nombre_mails_jours, pourcentage_mails_jours=pourcentage_mails_jours,  reponses_jours=reponses_jours, pourcentage_reponses_jours= pourcentage_reponses_jours, nombre_prospecteurs=len(prospecteurs) ,nombre_secteurs=len(secteurs))
+    
 if __name__ == "__main__":
     db.create_all()
-    app.run()
+    app.run(debug=True)
