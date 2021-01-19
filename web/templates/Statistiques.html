@@ -54,12 +54,19 @@
                     </div>
 
                     <script>
+
                    
                         var ctx = document.getElementById('prospecteurs').getContext("2d");
+                        var noms = []
+                        {% for prospecteur in prospecteurs%}
+                            
+                            noms.push(' {{prospecteur}} ')
+                        {% endfor %}
+
                         var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
-                            labels:{{prospecteurs}},
+                            labels:noms,
                             datasets: [{
                                 label: "prospecteur : ",
                                 data: {{classement_prospecteurs}},
@@ -97,10 +104,15 @@
                    
 
                         var ctx = document.getElementById('s').getContext("2d");
+                        var noms = []
+                        {% for secteur in secteurs%}
+                            
+                            noms.push(' {{secteur}} ')
+                        {% endfor %}
                         var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
-                            labels: {{secteurs}},
+                            labels: noms,
                             datasets: [{
                                 label: "Nombre de mails : ",
                                 data: {{mails_par_secteur}},
@@ -136,10 +148,15 @@
                    
 
                         var ctx = document.getElementById('pcsecteur').getContext("2d");
+                        var noms = []
+                        {% for secteur in secteurs%}
+                            
+                            noms.push(' {{secteur}} ')
+                        {% endfor %}
                         var myChart = new Chart(ctx, {
                         type: 'line',
                         data: {
-                            labels: {{secteurs}},
+                            labels: noms,
                             datasets: [{
                                 label: "Pourcentage de mails : ",
                                 data: {{pourcentage_mails_par_secteur}},

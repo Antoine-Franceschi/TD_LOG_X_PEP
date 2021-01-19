@@ -745,7 +745,7 @@ def statistiques(name):
     jours, pourcentage_mails_jours, pourcentage_reponses_jours=db_prospection.envois_reponses_jour_semaine(db_prospection, True)
 
     
-    return render_template('Statistiques.html', name=name, prospecteurs=prospecteurs , classement_prospecteurs=classement_prospecteurs, secteurs=secteurs, mails_par_secteur=mails_par_secteur, pourcentage_mails_par_secteur=pourcentage_mails_par_secteur,  jours=jours, nombre_mails_jours=nombre_mails_jours, pourcentage_mails_jours=pourcentage_mails_jours,  reponses_jours=reponses_jours, pourcentage_reponses_jours= pourcentage_reponses_jours)
+    return render_template('Statistiques.html', name=name, prospecteurs=prospecteurs, classement_prospecteurs=classement_prospecteurs, secteurs=secteurs, mails_par_secteur=mails_par_secteur, pourcentage_mails_par_secteur=pourcentage_mails_par_secteur,  jours=jours, nombre_mails_jours=nombre_mails_jours, pourcentage_mails_jours=pourcentage_mails_jours,  reponses_jours=reponses_jours, pourcentage_reponses_jours= pourcentage_reponses_jours, nombre_prospecteurs=len(prospecteurs) ,nombre_secteurs=len(secteurs))
     
 if __name__ == "__main__":
     db.create_all()
