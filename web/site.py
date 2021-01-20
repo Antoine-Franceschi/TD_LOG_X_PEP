@@ -10,6 +10,17 @@ import calendar
 import os
 import json
 
+
+from string import Template
+
+## Importation des modules pour les mails
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
+from email import encoders
+
 app = Flask(__name__)
 app.config['STATIC_AUTO_RELOAD'] = True
 app.config['TEMPLATES_AUTO_RELOAD' ] = True
@@ -31,6 +42,12 @@ class db_utilisateurs(db.Model):
         self.name = name
         self.email = email 
         self.mdp = mdp
+
+    def liste_utilisateurs(self):
+        lst_user = []
+        for usr in self.query.all():
+            lst_user.append(str(usr.name))
+        return lst_user
 
 
 class db_factures(db.Model):
@@ -676,10 +693,44 @@ def delete_information(name,id):
 
 ##################### page pep recrute #####################
 @app.route('/pep_recrute/<name>',methods=["GET","POST"])
-def page_pep_recrute(name):
-    return(render_template("pep_recrute.html", name=name))
+def page1(name):
+    suiveur = db_utilisateurs.liste_utilisateurs(db_utilisateurs)
+    render_template("pep_recrute.html", name=name, suiveurs = suiveur)
+    page_pep_recrute(name)
+    return(render_template("pep_recrute.html", name=name, suiveurs = suiveur))
 
-def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, piece_jointe_nom, piece_jointe_chemin, template_chemin):
+def page_pep_recrute(name):
+    if request.method == "POST" :
+        svr = request.form['_suiveur']
+        departement = request.form['departement']
+        destinataire = request.form['_destinataire']
+        titre = request.form['_titre']
+        prix = request.form['_prix']
+        client = request.form['_client']
+        corps = request.form['_corps']
+
+        mail = db_pep_recrute(svr, departement, destinataire, titre, prix, client, corps)
+        db.session.add(mail)
+        db.session.commit()
+        html = initialise_html("web/templates/template_mail_pep_recrute.html" , svr, departement, destinataire, titre, prix, client, corps)
+        envoi_mail("tdlogxpep@gmail.com", "Francesleplusbo", destinataire, "G reussi", " ", html)
+        return redirect(url_for('page1', name = name))
+    
+    suiveur = db_utilisateurs.liste_utilisateurs(db_utilisateurs)
+    return(render_template("pep_recrute.html", name=name, suiveurs = suiveur))
+
+def initialise_html(template_chemin, suiveur1, departement1, destinataire1, titre1, prix1, client1, corps1):
+    f = open(template_chemin)
+    html = f.read()
+    html = Template(html).safe_substitute(titre = titre1, prix = prix1, client = client1, corps = corps1)
+    return html
+
+
+
+
+#def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, piece_jointe_nom, piece_jointe_chemin, template_chemin):
+def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, html1):
+
     Fromadd = mail_expediteur # sous la forme d'une chaine de caractère
     Toadd = mail_destinataire # sous la forme d'une chaine de caractère
 
@@ -691,23 +742,23 @@ def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_
 
     message.attach(MIMEText(msg.encode('utf-8'), 'plain', 'utf-8'))    # Attache du message à l'objet "message", et encodage en UTF-8
 
-    nom_fichier = piece_jointe_nom # Spécification du nom de la pièce jointe
-    piece = open(piece_jointe_chemin, "rb") # Ouverture du fichier
-    part = MIMEBase('application', 'octet-stream') # Encodage de la pièce jointe en Base64
-    part.set_payload((piece).read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', "piece; filename= %s" % nom_fichier)
-    message.attach(part) # Attache de la pièce jointe à l'objet "message" 
+#    nom_fichier = piece_jointe_nom # Spécification du nom de la pièce jointe
+#    piece = open(piece_jointe_chemin, "rb") # Ouverture du fichier
+#    part = MIMEBase('application', 'octet-stream') # Encodage de la pièce jointe en Base64
+#    part.set_payload((piece).read())
+#    encoders.encode_base64(part)
+#    part.add_header('Content-Disposition', "piece; filename= %s" % nom_fichier)
+#    message.attach(part) # Attache de la pièce jointe à l'objet "message" 
 
-    f = open(template_chemin)
+###    f = open(template_chemin)
+###    html = f.read()
 
-    html = f.read()
-    part2 = MIMEText(html, 'html')
+    part2 = MIMEText(html1, 'html')
     message.attach(part2)
 
     serveur = smtplib.SMTP('smtp.gmail.com', 587) # Connexion au serveur sortant (en précisant son nom et son port)
     serveur.starttls() # Spécification de la sécurisation
-    serveur.login(Fromadd, expediteur_mdp) # Authentification
+    serveur.login(Fromadd, "Francesleplusbo") # Authentification
     texte= message.as_string().encode('utf-8') # Conversion de l'objet "message" en chaine de caractère et encodage en UTF-8
     serveur.sendmail(Fromadd, Toadd, texte) # Envoi du mail
     serveur.quit() # Déconnexion du serveur
