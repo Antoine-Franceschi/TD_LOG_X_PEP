@@ -1,7 +1,7 @@
 #site pep
 from flask import Flask,render_template,url_for,request, redirect, flash,session
 from wtforms import StringField, SubmitField, FloatField, SelectField, DateField
-from datetime import timedelta
+from datetime import timedelta #, date
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 import sqlite3
@@ -20,6 +20,8 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email import encoders
+from email.mime.application import MIMEApplication
+
 
 app = Flask(__name__)
 app.config['STATIC_AUTO_RELOAD'] = True
@@ -119,16 +121,13 @@ class db_prospection(db.Model):
     client_entreprise = db.Column(db.String(100))
     client_secteur= db.Column(db.String(100))
     client_poste = db.Column(db.String(100))
-    client_promo = db.Column(db.Integer)
-    client_telephone = db.Column(db.String(100))
     client_mail = db.Column(db.String(100))
     mode_contact = db.Column(db.String(100))
     date_envoi = db.Column(db.String(100))
-    ancien_ponts = db.Column(db.Boolean)
     reponse = db.Column(db.Boolean)
     date_relance = db.Column(db.String(100))
 
-    def __init__(self, suiveur, client_sexe, client_nom, client_prenom, client_entreprise, client_secteur,  client_poste, client_promo, client_telephone, client_mail, mode_contact, date_envoi, ancien_ponts, reponse, date_relance):
+    def __init__(self, suiveur, client_sexe, client_nom, client_prenom, client_entreprise, client_secteur,  client_poste, client_mail, mode_contact, date_envoi, reponse, date_relance):
         self.suiveur = suiveur
         self.client_sexe = client_sexe
         self.client_nom = client_nom
@@ -136,12 +135,9 @@ class db_prospection(db.Model):
         self.client_entreprise = client_entreprise
         self.client_secteur=client_secteur
         self.client_poste = client_poste
-        self.client_promo = client_promo
-        self.client_telephone = client_telephone
         self.client_mail = client_mail
         self.mode_contact = mode_contact
         self.date_envoi = date_envoi
-        self.ancien_ponts = ancien_ponts
         self.reponse = reponse
         self.date_relance = date_relance
 
@@ -162,9 +158,9 @@ class db_prospection(db.Model):
         return annee_debut_mandat, annee_fin_mandat
     
     def mail_dans_le_mandat(self, mail):
-        date= mail.date_envoi
-        annee_mail= int(date[6:])
-        mois_mail=int(date[3:5])
+        date1= mail.date_envoi
+        annee_mail= int(date1[6:])
+        mois_mail=int(date1[3:5])
         annee_debut_mandat, annee_fin_mandat = self.annees_du_mandat(self)
         #on prend les mails depuis mai de debut de mandat jusque avril fin mandat (année d'après)
         if ( mois_mail>=5  and annee_mail== annee_debut_mandat) or (mois_mail<5 and annee_mail==annee_fin_mandat):
@@ -702,7 +698,8 @@ def page1(name):
 def page_pep_recrute(name):
     if request.method == "POST" :
         svr = request.form['_suiveur']
-        departement = request.form['departement']
+        dptm = request.form.getlist('departement')
+        departement = str(dptm)
         destinataire = request.form['_destinataire']
         titre = request.form['_titre']
         prix = request.form['_prix']
@@ -712,8 +709,8 @@ def page_pep_recrute(name):
         mail = db_pep_recrute(svr, departement, destinataire, titre, prix, client, corps)
         db.session.add(mail)
         db.session.commit()
-        html = initialise_html("web/templates/template_mail_pep_recrute.html" , svr, departement, destinataire, titre, prix, client, corps)
-        envoi_mail("tdlogxpep@gmail.com", "Francesleplusbo", destinataire, "G reussi", " ", html)
+        html = initialise_html("web/templates/template_mail_pep_recrute.html" , svr, dptm, destinataire, titre, prix, client, corps)
+        envoi_mail("tdlogxpep@gmail.com", "Francesleplusbo", destinataire, "[PEP recrute] " + str(titre), " ", html)
         return redirect(url_for('page1', name = name))
     
     suiveur = db_utilisateurs.liste_utilisateurs(db_utilisateurs)
@@ -722,14 +719,38 @@ def page_pep_recrute(name):
 def initialise_html(template_chemin, suiveur1, departement1, destinataire1, titre1, prix1, client1, corps1):
     f = open(template_chemin)
     html = f.read()
-    html = Template(html).safe_substitute(titre = titre1, prix = prix1, client = client1, corps = corps1)
+    IMI1 = "gray"
+    SEGF1 = "gray"
+    VET1="gray"
+    GMM1="gray"
+    GMM2 = "gray"
+    GCC1="gray"
+    GCC2 = "gray"
+    GI1="gray"
+    unA1="gray"
+    for elem in departement1:
+        if elem == "IMI":
+            IMI1 = "yellow"
+        elif elem == "SEGF":
+            SEGF1 = "yellow"
+        elif elem == "VET" :
+            VET1 = "yellow"
+        elif elem == "GMM":
+            GMM1 = "yellow"
+        elif elem == "GCC":
+            GCC1 = "yellow"
+        elif elem == "GI":
+            GI1 = "yellow"
+        elif elem == "1A":
+            unA1 =  "yellow"
+
+    html = Template(html).safe_substitute(titre = titre1, prix = prix1, client = client1, corps = corps1, imi_color = IMI1, segf_color = SEGF1, gi_color = GI1, vet_color = GI1, gcc_color = GCC1, gmm_color = GMM1, una_color = unA1)
     return html
 
 
 
-
 #def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, piece_jointe_nom, piece_jointe_chemin, template_chemin):
-def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, html1):
+def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_mail, html1, plaquette = False):
 
     Fromadd = mail_expediteur # sous la forme d'une chaine de caractère
     Toadd = mail_destinataire # sous la forme d'une chaine de caractère
@@ -742,16 +763,14 @@ def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_
 
     message.attach(MIMEText(msg.encode('utf-8'), 'plain', 'utf-8'))    # Attache du message à l'objet "message", et encodage en UTF-8
 
-#    nom_fichier = piece_jointe_nom # Spécification du nom de la pièce jointe
-#    piece = open(piece_jointe_chemin, "rb") # Ouverture du fichier
-#    part = MIMEBase('application', 'octet-stream') # Encodage de la pièce jointe en Base64
-#    part.set_payload((piece).read())
-#    encoders.encode_base64(part)
-#    part.add_header('Content-Disposition', "piece; filename= %s" % nom_fichier)
-#    message.attach(part) # Attache de la pièce jointe à l'objet "message" 
-
-###    f = open(template_chemin)
-###    html = f.read()
+    if plaquette:
+        
+        nom_fichier = "plaquette_PEP" # Spécification du nom de la pièce jointe
+        piece = open("web/static/plaquette_PEP.pdf", "rb") # Ouverture du fichier
+        attach = MIMEApplication(piece.read(),maintype = "pdf", _subtype="pdf")
+        
+        message.attach(attach) # Attache de la pièce jointe à l'objet "message" 
+        #attach.add_header('Content-Disposition', "piece; filename= plaquette_PEP")
 
     part2 = MIMEText(html1, 'html')
     message.attach(part2)
@@ -768,7 +787,47 @@ def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_
 @app.route('/prospection/<name>',methods=["GET","POST"])
 
 def page_prospection(name):
-    return(render_template("Email_front.html", name=name))
+    suiveur = db_utilisateurs.liste_utilisateurs(db_utilisateurs)
+    render_template("Email_front.html", name=name, suiveurs = suiveur)
+    prospection(name)
+    return(render_template("Email_front.html", name=name, suiveurs = suiveur))
+
+def prospection(name):
+    if request.method == "POST" :
+        svr = request.form['_suiveur']
+        civilite = request.form['_civilite']
+        nom = request.form['_nom']
+        prenom = request.form['_prenom']
+        secteur = request.form['_secteur']
+        entreprise = request.form['_entreprise']
+        poste = request.form['_poste']
+        destinataire = request.form['_destinataire']
+        mode_contact = request.form['_mode_contact']
+        # corps = request.form['_corps']
+
+        #date1 = datetime.date.today()
+
+        mail = db_prospection(svr, civilite, nom, prenom, entreprise, secteur, poste, destinataire, mode_contact, "date1", False, None)
+        db.session.add(mail)
+        db.session.commit()
+        chemin = "web/templates/mail_prospection/" + str(secteur) + ".html"
+        html = initialise_html(chemin , svr, civilite, nom, entreprise, mode_contact)
+        envoi_mail("tdlogxpep@gmail.com", "Francesleplusbo", destinataire, "Ponts Etudes Projets - Junior-Entreprise", " ", html, plaquette = True)
+        return redirect(url_for('page_prospection', name = name))
+    
+    suiveur = db_utilisateurs.liste_utilisateurs(db_utilisateurs)
+    return(render_template("Email_front.html", name=name, suiveurs = suiveur))
+
+def initialise_html(template_chemin, suiveur1, civilite1, nom1, entreprise1, mode_contact1):
+    f = open(template_chemin)
+    html = f.read()
+    html = Template(html).safe_substitute(suiveur = suiveur1, civilite = civilite1, nom = nom1, entreprise = entreprise1, mode_contact = mode_contact1)
+    return html
+
+@app.route('/prospection/<name>/appercu', methods=["GET","POST"])
+def appercu(name):
+    render_template("banque.html", name=name)
+
 
 #################### statistiques ################################"
 

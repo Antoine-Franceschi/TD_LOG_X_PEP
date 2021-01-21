@@ -36,16 +36,15 @@
             </div>
         </div>
 
-        <p class="titre">PER Recrute</p>
+        <p class="titre">PEP Recrute</p>
         <form class="form-signin" method="post">
             <div class="pep_recrute">
-            
                 <div>
                     <label for="input_suiveur"> Suiveur </label>
                     <br>
                     <select name="_suiveur" id="input_suiveur" class="form-suiveur" required="required" >
                         {% for elem in suiveurs %}
-                        <option> elem </option>
+                        <option> {{elem}} </option>
                         {% endfor %}
 
                     </select>
@@ -55,41 +54,42 @@
                     <fieldset>
                         <legend>Départements concernés :</legend>
                         <div>
-                          <input type="checkbox" id="IMI" name="departement" value="IMI">
+                          <input type="checkbox" id="IMI" name="departement" value="IMI" class = "departement">
                           <label for="IMI">IMI</label>
                         </div>
+
     
                         <div>
-                          <input type="checkbox" id="SEGF" name="departement" value="SEGF">
+                          <input type="checkbox" id="SEGF" name="departement" value="SEGF" class = "departement">
                           <label for="SEGF">SEGF</label>
                         </div>
     
                         <div>
-                            <input type="checkbox" id="VET" name="departement" value="VET">
+                            <input type="checkbox" id="VET" name="departement" value="VET" class = "departement">
                             <label for="VET">VET</label>
                         </div>
     
                         <div>
-                            <input type="checkbox" id="GMM" name="departement" value="GMM">
+                            <input type="checkbox" id="GMM" name="departement" value="GMM" class = "departement">
                             <label for="GMM">GMM</label>
                         </div>
     
                         <div>
-                            <input type="checkbox" id="GCC" name="departement" value="GCC">
+                            <input type="checkbox" id="GCC" name="departement" value="GCC" class = "departement">
                             <label for="GCC">GCC</label>
                         </div>
     
                         <div>
-                            <input type="checkbox" id="GI" name="departement" value="GI">
+                            <input type="checkbox" id="GI" name="departement" value="GI" class = "departement">
                             <label for="GI">GI</label>
                         </div>
     
                         <div>
-                            <input type="checkbox" id="1A" name="departement" value="1A">
+                            <input type="checkbox" id="1A" name="departement" value="1A" class = "departement">
                             <label for="1A">1A</label>
                         </div>
-    
-                      </fieldset>
+
+                    </fieldset>
                 </div>
                 
                 <div>
@@ -115,21 +115,6 @@
                     <br>
                     <input name="_client" id="input_client" class="form-client"  required="required" />
                 </div>
-
-                <div>
-                    <label for="input_numero">Prix</label>
-                    <br>
-                    <input name="_client" id="input_client" class="form-client"  required="required" />
-                </div>
-
-                <!--
-                   <div>
-                    <label for="input_numero">Corps</label>
-                    <br>
-                    <input name="_corps" id="input_corps" class="form-corps"  required="required" />
-                </div> 
-                -->
-
 
                 <div>
                     <label for="input_numero">Corps</label>
