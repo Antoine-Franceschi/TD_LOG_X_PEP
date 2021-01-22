@@ -389,9 +389,9 @@ def weekly(name):
 
         con = sqlite3.connect("users.sqlite3")
         script_dir = os.path.dirname(__file__)
-        rel_path = "/static/bdd_weekly1.csv'"
+        rel_path = "static/bdd_weekly1.csv'"
         abs_file_path = os.path.join(script_dir, rel_path)
-        outfile = open("static/bdd_weekly.csv", 'w')
+        outfile = open(abs_file_path, 'w')
         
         outcsv = csv.writer(outfile)
         cursor = con.execute('select * from db_weekly')
@@ -766,7 +766,10 @@ def envoi_mail(mail_expediteur, expediteur_mdp, mail_destinataire, sujet, corps_
     if plaquette:
         
         nom_fichier = "plaquette_PEP" # Spécification du nom de la pièce jointe
-        piece = open("static/plaquette_PEP.pdf", "rb") # Ouverture du fichier
+        script_dir = os.path.dirname(__file__)
+        rel_path = "static/plaquette_PEP.pdf"
+        abs_file_path = os.path.join(script_dir, rel_path)
+        piece = open(abs_file_path, "rb") # Ouverture du fichier
         attach = MIMEApplication(piece.read(),maintype = "pdf", _subtype="pdf")
         
         message.attach(attach) # Attache de la pièce jointe à l'objet "message" 
@@ -811,7 +814,9 @@ def prospection(name):
         db.session.add(mail)
         db.session.commit()
         chemin = "templates/mail_prospection/" + str(secteur) + ".html"
-        html = initialise_html(chemin , svr, civilite, nom, entreprise, mode_contact)
+        script_dir = os.path.dirname(__file__)
+        abs_file_path = os.path.join(script_dir, chemin)
+        html = initialise_html(abs_file_path, svr, civilite, nom, entreprise, mode_contact)
         envoi_mail("tdlogxpep@gmail.com", "Francesleplusbo", destinataire, "Ponts Etudes Projets - Junior-Entreprise", " ", html, plaquette = True)
         return redirect(url_for('page_prospection', name = name))
     
